@@ -1,0 +1,33 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- include: zaqar_pre_install.yml
+- include: zaqar_install.yml
+- include: zaqar_post_install.yml
+
+- include: zaqar_service_setup.yml
+  when: >
+    inventory_hostname == groups['zaqar_all'][0]
+
+#- include: zaqar_upstart_init.yml
+
+- include: zaqar_apache.yml
+  when: zaqar_install_apache | bool
+
+- include: zaqar_nginx.yml
+  when: zaqar_install_nginx | bool
+
+- name: Flush handlers
+  meta: flush_handlers

@@ -1,0 +1,192 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+- name: Check apt last update file
+  stat:
+    path: /var/cache/apt
+  register: apt_cache_stat
+  tags:
+    - zaqar-apt-packages
+
+- name: Update apt if needed
+  apt:
+    update_cache: yes
+  when: "ansible_date_time.epoch|float - apt_cache_stat.stat.mtime > {{cache_timeout}}"
+  tags:
+    - zaqar-apt-packages
+
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: zaqar_apt_packages
+  tags:
+    - zaqar-install
+    - zaqar-apt-packages
+
+- name: Create developer mode constraint file
+  copy:
+    dest: "/opt/developer-pip-constraints.txt"
+    content: |
+      {% for item in zaqar_developer_constraints %}
+      {{ item }}
+      {% endfor %}
+  when:
+    - zaqar_standalone_mode | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Set constraint file fact for developer mode
+  set_fact:
+    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt"
+  when:
+    - zaqar_standalone_mode | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Install requires pip packages
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: zaqar_requires_pip_packages
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
+#       a) allow us to remove force: yes
+#       b) allow the module to calculate the checksum of dest file which would
+#          result in file being downloaded only if provided and dest sha256sum
+#          checksums differ
+- name: Attempt venv download
+  get_url:
+    url: "{{ zaqar_venv_download_url }}"
+    dest: "/var/cache/{{ zaqar_venv_download_url | basename }}"
+    force: yes
+  ignore_errors: true
+  register: get_venv
+  when:
+    - not zaqar_standalone_mode | bool
+    - zaqar_venv_enabled | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Set zaqar get_venv fact
+  set_fact:
+    zaqar_get_venv: "{{ get_venv }}"
+  when: zaqar_venv_enabled | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Remove existing venv
+  file:
+    path: "{{ zaqar_venv_bin | dirname }}"
+    state: absent
+  when:
+    - zaqar_venv_enabled | bool
+    - zaqar_get_venv | changed
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Create zaqar venv dir
+  file:
+    path: "{{ zaqar_venv_bin | dirname }}"
+    state: directory
+  when:
+    - not zaqar_standalone_mode | bool
+    - zaqar_venv_enabled | bool
+    - zaqar_get_venv | changed
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Unarchive pre-built venv
+  unarchive:
+    src: "/var/cache/{{ zaqar_venv_download_url | basename }}"
+    dest: "{{ zaqar_venv_bin | dirname }}"
+    copy: "no"
+  when:
+    - not zaqar_standalone_mode | bool
+    - zaqar_venv_enabled | bool
+    - zaqar_get_venv | changed
+  notify:
+    - Restart zaqar api
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Update virtualenv path
+  command: >
+    virtualenv-tools --update-path=auto {{ zaqar_venv_bin | dirname }}
+  when:
+    - not zaqar_standalone_mode | bool
+    - zaqar_venv_enabled | bool
+    - zaqar_get_venv | success
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Install pip packages (venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    virtualenv: "{{ zaqar_venv_bin | dirname }}"
+    virtualenv_site_packages: "no"
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: zaqar_pip_packages
+  when:
+    - zaqar_venv_enabled | bool
+    - zaqar_get_venv | failed or zaqar_standalone_mode | bool
+#  notify:
+#    - Restart zaqar api
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Install pip packages (no venv)
+  pip:
+    name: "{{ item }}"
+    state: present
+    extra_args: "{{ pip_install_options|default('') }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: zaqar_pip_packages
+  when:
+    - not zaqar_standalone_mode | bool
+    - not zaqar_venv_enabled | bool
+#  notify:
+#    - Restart zaqar api
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages

@@ -1,0 +1,19 @@
+# {{ ansible_managed }}
+
+Listen {{ zaqar_api_bind_port }}
+
+<VirtualHost *:{{ zaqar_api_bind_port }}>
+    WSGIDaemonProcess     zaqar-api user={{ zaqar_system_user_name }} group={{ zaqar_system_group_name }} processes={{ zaqar_wsgi_processes }} threads={{ zaqar_wsgi_threads }} display-name=%{GROUP}
+    WSGIProcessGroup      zaqar-api
+    WSGIScriptAlias       / /var/www/cgi-bin/zaqar/app
+    WSGIApplicationGroup  %{GLOBAL}
+
+    <IfVersion >= 2.4>
+      ErrorLogFormat "%{cu}t %M"
+    </IfVersion>
+
+    LogLevel  {{  zaqar_apache_log_level }}
+    ErrorLog  /var/log/zaqar/zaqar-apache-error.log
+    CustomLog /var/log/zaqar/zaqar-access.log combined
+    Options +FollowSymLinks
+</VirtualHost>

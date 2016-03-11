@@ -1,0 +1,599 @@
+#{{ ansible_managed}}
+
+[DEFAULT]
+debug = true
+
+#
+# From zaqar.common.configs
+#
+
+# Activate privileged endpoints. (boolean value)
+admin_mode = true
+
+# Enable pooling across multiple storage backends. If pooling is
+# enabled, the storage driver configuration is used to determine where
+# the catalogue/control plane data is kept. (boolean value)
+# Deprecated group/name - [DEFAULT]/sharding
+pooling = {{ zaqar_enable_pooling }}
+
+# Disable all reliability constraints. (boolean value)
+unreliable = {{ zaqar_unreliable }}
+
+#
+# From zaqar.transport.base
+#
+
+# Backend to use for authentication. For no auth, keep it empty.
+# Existing strategies: keystone. See also the keystone_authtoken
+# section below (string value)
+auth_strategy = keystone
+
+
+[drivers]
+
+#
+# From zaqar.common.configs
+#
+
+# Transport driver to use. (string value)
+#transport = wsgi
+
+# Storage driver to use as the messaging store. (string value)
+# Deprecated group/name - [DEFAULT]/storage
+#message_store = mongodb
+
+# Storage driver to use as the management store. (string value)
+management_store = sqlalchemy
+
+
+[drivers:management_store:mongodb]
+
+#
+# From zaqar.storage.mongodb
+#
+
+# The private keyfile used to identify the local connection against
+# mongod. If included with the ``certifle`` then only the
+# ``ssl_certfile`` is needed. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_keyfile
+#ssl_keyfile = <None>
+
+# The certificate file used to identify the local connection against
+# mongod. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_certfile
+#ssl_certfile = <None>
+
+# Specifies whether a certificate is required from the other side of
+# the connection, and whether it will be validated if provided. It
+# must be one of the three values ``CERT_NONE``(certificates ignored),
+# ``CERT_OPTIONAL``(not required, but validated if provided), or
+# ``CERT_REQUIRED``(required and validated). If the value of this
+# parameter is not ``CERT_NONE``, then the ``ssl_ca_cert`` parameter
+# must point to a file of CA certificates. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_cert_reqs
+#ssl_cert_reqs = CERT_REQUIRED
+
+# The ca_certs file contains a set of concatenated "certification
+# authority" certificates, which are used to validate certificates
+# passed from the other end of the connection. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_ca_certs
+#ssl_ca_certs = <None>
+
+# Mongodb Connection URI. If ssl connection enabled, then
+# ``ssl_keyfile``, ``ssl_certfile``, ``ssl_cert_reqs``,
+# ``ssl_ca_certs`` need to be set accordingly. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/uri
+#uri = <None>
+
+# Database name. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/database
+#database = zaqar
+
+# Maximum number of times to retry a failed operation. Currently only
+# used for retrying a message post. (integer value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_attempts
+#max_attempts = 1000
+
+# Maximum sleep interval between retries (actual sleep time increases
+# linearly according to number of attempts performed). (floating point
+# value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_retry_sleep
+#max_retry_sleep = 0.1
+
+# Maximum jitter interval, to be added to the sleep interval, in order
+# to decrease probability that parallel requests will retry at the
+# same instant. (floating point value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_retry_jitter
+#max_retry_jitter = 0.005
+
+# Maximum number of times to retry an operation that failed due to a
+# primary node failover. (integer value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_reconnect_attempts
+#max_reconnect_attempts = 10
+
+# Base sleep interval between attempts to reconnect after a primary
+# node failover. The actual sleep time increases exponentially (power
+# of 2) each time the operation is retried. (floating point value)
+# Deprecated group/name - [drivers:storage:mongodb]/reconnect_sleep
+#reconnect_sleep = 0.02
+
+
+[drivers:management_store:redis]
+
+#
+# From zaqar.storage.redis
+#
+
+# Redis connection URI, taking one of three forms. For a direct
+# connection to a Redis server, use the form
+# "redis://host[:port][?options]", where port defaults to 6379 if not
+# specified. For an HA master-slave Redis cluster using Redis
+# Sentinel, use the form
+# "redis://host1[:port1][,host2[:port2],...,hostN[:portN]][?options]",
+# where each host specified corresponds to an instance of redis-
+# sentinel. In this form, the name of the Redis master used in the
+# Sentinel configuration must be included in the query string as
+# "master=<name>". Finally, to connect to a local instance of Redis
+# over a unix socket, you may use the form
+# "redis:/path/to/redis.sock[?options]". In all forms, the
+# "socket_timeout" option may be specified in the query string. Its
+# value is given in seconds. If not provided, "socket_timeout"
+# defaults to 0.1 seconds. (string value)
+# Deprecated group/name - [drivers:storage:redis]/uri
+#uri = redis://127.0.0.1:6379
+
+# Maximum number of times to retry an operation that failed due to a
+# redis node failover. (integer value)
+# Deprecated group/name - [drivers:storage:redis]/max_reconnect_attempts
+#max_reconnect_attempts = 10
+
+# Base sleep interval between attempts to reconnect after a redis node
+# failover.  (floating point value)
+# Deprecated group/name - [drivers:storage:redis]/reconnect_sleep
+#reconnect_sleep = 1.0
+
+
+[drivers:management_store:sqlalchemy]
+
+#
+# From zaqar.storage.sqlalchemy
+#
+
+# An sqlalchemy URL (string value)
+# Deprecated group/name - [drivers:storage:sqlalchemy]/uri
+uri = {{ zaqar_mgmt_db_connection_string }}
+
+
+[drivers:message_store:mongodb]
+
+#
+# From zaqar.storage.mongodb
+#
+
+# The private keyfile used to identify the local connection against
+# mongod. If included with the ``certifle`` then only the
+# ``ssl_certfile`` is needed. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_keyfile
+#ssl_keyfile = <None>
+
+# The certificate file used to identify the local connection against
+# mongod. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_certfile
+#ssl_certfile = <None>
+
+# Specifies whether a certificate is required from the other side of
+# the connection, and whether it will be validated if provided. It
+# must be one of the three values ``CERT_NONE``(certificates ignored),
+# ``CERT_OPTIONAL``(not required, but validated if provided), or
+# ``CERT_REQUIRED``(required and validated). If the value of this
+# parameter is not ``CERT_NONE``, then the ``ssl_ca_cert`` parameter
+# must point to a file of CA certificates. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_cert_reqs
+#ssl_cert_reqs = CERT_REQUIRED
+
+# The ca_certs file contains a set of concatenated "certification
+# authority" certificates, which are used to validate certificates
+# passed from the other end of the connection. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/ssl_ca_certs
+#ssl_ca_certs = <None>
+# Mongodb Connection URI. If ssl connection enabled, then
+# ``ssl_keyfile``, ``ssl_certfile``, ``ssl_cert_reqs``,
+# ``ssl_ca_certs`` need to be set accordingly. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/uri
+#uri = <None>
+
+# Database name. (string value)
+# Deprecated group/name - [drivers:storage:mongodb]/database
+#database = zaqar
+
+# Maximum number of times to retry a failed operation. Currently only
+# used for retrying a message post. (integer value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_attempts
+#max_attempts = 1000
+
+# Maximum sleep interval between retries (actual sleep time increases
+# linearly according to number of attempts performed). (floating point
+# value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_retry_sleep
+#max_retry_sleep = 0.1
+
+# Maximum jitter interval, to be added to the sleep interval, in order
+# to decrease probability that parallel requests will retry at the
+# same instant. (floating point value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_retry_jitter
+#max_retry_jitter = 0.005
+
+# Maximum number of times to retry an operation that failed due to a
+# primary node failover. (integer value)
+# Deprecated group/name - [drivers:storage:mongodb]/max_reconnect_attempts
+#max_reconnect_attempts = 10
+
+# Base sleep interval between attempts to reconnect after a primary
+# node failover. The actual sleep time increases exponentially (power
+# of 2) each time the operation is retried. (floating point value)
+# Deprecated group/name - [drivers:storage:mongodb]/reconnect_sleep
+#reconnect_sleep = 0.02
+
+# Number of databases across which to partition message data, in order
+# to reduce writer lock %. DO NOT change this setting after initial
+# deployment. It MUST remain static. Also, you should not need a large
+# number of partitions to improve performance, esp. if deploying
+# MongoDB on SSD storage. (integer value)
+# Deprecated group/name - [drivers:storage:mongodb]/partitions
+#partitions = 2
+
+
+[drivers:message_store:redis]
+
+#
+# From zaqar.storage.redis
+#
+
+# Redis connection URI, taking one of three forms. For a direct
+# connection to a Redis server, use the form
+# "redis://host[:port][?options]", where port defaults to 6379 if not
+# specified. For an HA master-slave Redis cluster using Redis
+# Sentinel, use the form
+# "redis://host1[:port1][,host2[:port2],...,hostN[:portN]][?options]",
+# where each host specified corresponds to an instance of redis-
+# sentinel. In this form, the name of the Redis master used in the
+# Sentinel configuration must be included in the query string as
+# "master=<name>". Finally, to connect to a local instance of Redis
+# over a unix socket, you may use the form
+# "redis:/path/to/redis.sock[?options]". In all forms, the
+# "socket_timeout" option may be specified in the query string. Its
+# value is given in seconds. If not provided, "socket_timeout"
+# defaults to 0.1 seconds. (string value)
+# Deprecated group/name - [drivers:storage:redis]/uri
+#uri = redis://127.0.0.1:6379
+
+# Maximum number of times to retry an operation that failed due to a
+# redis node failover. (integer value)
+# Deprecated group/name - [drivers:storage:redis]/max_reconnect_attempts
+#max_reconnect_attempts = 10
+
+# Base sleep interval between attempts to reconnect after a redis node
+# failover.  (floating point value)
+# Deprecated group/name - [drivers:storage:redis]/reconnect_sleep
+#reconnect_sleep = 1.0
+
+
+[drivers:transport:wsgi]
+
+#
+# From zaqar.transport.wsgi
+#
+
+# Address on which the self-hosting server will listen. (ip address
+# value)
+bind = 0.0.0.0
+
+# Port on which the self-hosting server will listen. (port value)
+# Minimum value: 1
+# Maximum value: 65535
+#port = 8888
+
+[keystone_authtoken]
+#signing_dir = /var/cache/zaqar
+auth_plugin = {{ zaqar_keystone_auth_plugin }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = default
+user_domain_id = default
+project_name = {{ zaqar_service_project_name }}
+username = {{ zaqar_service_user_name }}
+password = {{ zaqar_service_user_password }}
+#cafile = {{ zaqar_service_cafile_path }}
+
+#
+# From keystonemiddleware.auth_token
+#
+
+# Complete public Identity API endpoint. (string value)
+#auth_uri = <None>
+
+# API version of the admin Identity API endpoint. (string value)
+#auth_version = <None>
+
+# Do not handle authorization requests within the middleware, but
+# delegate the authorization decision to downstream WSGI components.
+# (boolean value)
+#delay_auth_decision = false
+
+# Request timeout value for communicating with Identity API server.
+# (integer value)
+#http_connect_timeout = <None>
+
+# How many times are we trying to reconnect when communicating with
+# Identity API Server. (integer value)
+#http_request_max_retries = 3
+
+# Env key for the swift cache. (string value)
+#cache = <None>
+
+# Required if identity server requires client certificate (string
+# value)
+#certfile = <None>
+
+# Required if identity server requires client certificate (string
+# value)
+#keyfile = <None>
+
+# A PEM encoded Certificate Authority to use when verifying HTTPs
+# connections. Defaults to system CAs. (string value)
+#cafile = <None>
+
+# Verify HTTPS connections. (boolean value)
+#insecure = false
+
+# The region in which the identity server can be found. (string value)
+#region_name = <None>
+
+# Directory used to cache files related to PKI tokens. (string value)
+#signing_dir = <None>
+
+# Optionally specify a list of memcached server(s) to use for caching.
+# If left undefined, tokens will instead be cached in-process. (list
+# value)
+# Deprecated group/name - [DEFAULT]/memcache_servers
+#memcached_servers = <None>
+
+# In order to prevent excessive effort spent validating tokens, the
+# middleware caches previously-seen tokens for a configurable duration
+# (in seconds). Set to -1 to disable caching completely. (integer
+# value)
+#token_cache_time = 300
+
+# Determines the frequency at which the list of revoked tokens is
+# retrieved from the Identity service (in seconds). A high number of
+# revocation events combined with a low cache duration may
+# significantly reduce performance. (integer value)
+#revocation_cache_time = 10
+
+# (Optional) If defined, indicate whether token data should be
+# authenticated or authenticated and encrypted. Acceptable values are
+# MAC or ENCRYPT.  If MAC, token data is authenticated (with HMAC) in
+# the cache. If ENCRYPT, token data is encrypted and authenticated in
+# the cache. If the value is not one of these options or empty,
+# auth_token will raise an exception on initialization. (string value)
+#memcache_security_strategy = <None>
+
+# (Optional, mandatory if memcache_security_strategy is defined) This
+# string is used for key derivation. (string value)
+#memcache_secret_key = <None>
+
+# (Optional) Number of seconds memcached server is considered dead
+# before it is tried again. (integer value)
+#memcache_pool_dead_retry = 300
+
+# (Optional) Maximum total number of open connections to every
+# memcached server. (integer value)
+#memcache_pool_maxsize = 10
+
+# (Optional) Socket timeout in seconds for communicating with a
+# memcached server. (integer value)
+#memcache_pool_socket_timeout = 3
+
+# (Optional) Number of seconds a connection to memcached is held
+# unused in the pool before it is closed. (integer value)
+#memcache_pool_unused_timeout = 60
+
+# (Optional) Number of seconds that an operation will wait to get a
+# memcached client connection from the pool. (integer value)
+#memcache_pool_conn_get_timeout = 10
+
+# (Optional) Use the advanced (eventlet safe) memcached client pool.
+# The advanced pool will only work under python 2.x. (boolean value)
+#memcache_use_advanced_pool = false
+
+# (Optional) Indicate whether to set the X-Service-Catalog header. If
+# False, middleware will not ask for service catalog on token
+# validation and will not set the X-Service-Catalog header. (boolean
+# value)
+#include_service_catalog = true
+
+# Used to control the use and type of token binding. Can be set to:
+# "disabled" to not check token binding. "permissive" (default) to
+# validate binding information if the bind type is of a form known to
+# the server and ignore it if not. "strict" like "permissive" but if
+# the bind type is unknown the token will be rejected. "required" any
+# form of token binding is needed to be allowed. Finally the name of a
+# binding method that must be present in tokens. (string value)
+#enforce_token_bind = permissive
+
+# If true, the revocation list will be checked for cached tokens. This
+# requires that PKI tokens are configured on the identity server.
+# (boolean value)
+#check_revocations_for_cached = false
+
+# Hash algorithms to use for hashing PKI tokens. This may be a single
+# algorithm or multiple. The algorithms are those supported by Python
+# standard hashlib.new(). The hashes will be tried in the order given,
+# so put the preferred one first for performance. The result of the
+# first hash will be stored in the cache. This will typically be set
+# to multiple values only while migrating from a less secure algorithm
+# to a more secure one. Once all the old tokens are expired this
+# option should be set to a single value for better performance. (list
+# value)
+#hash_algorithms = md5
+
+# Prefix to prepend at the beginning of the path. Deprecated, use
+# identity_uri. (string value)
+#auth_admin_prefix =
+
+# Host providing the admin Identity API endpoint. Deprecated, use
+# identity_uri. (string value)
+#auth_host = 127.0.0.1
+
+# Port of the admin Identity API endpoint. Deprecated, use
+# identity_uri. (integer value)
+#auth_port = 35357
+
+# Protocol of the admin Identity API endpoint (http or https).
+# Deprecated, use identity_uri. (string value)
+#auth_protocol = https
+
+# Complete admin Identity API endpoint. This should specify the
+# unversioned root endpoint e.g. https://localhost:35357/ (string
+# value)
+#identity_uri = <None>
+
+# This option is deprecated and may be removed in a future release.
+# Single shared secret with the Keystone configuration used for
+# bootstrapping a Keystone installation, or otherwise bypassing the
+# normal authentication process. This option should not be used, use
+# `admin_user` and `admin_password` instead. (string value)
+#admin_token = <None>
+
+# Service username. (string value)
+#admin_user = <None>
+
+# Service user password. (string value)
+#admin_password = <None>
+
+# Service tenant name. (string value)
+#admin_tenant_name = admin
+
+
+[notification]
+
+#
+# From zaqar.common.configs
+#
+
+# The command of smtp to send email. The format is "command_name arg1
+# arg2". (string value)
+#smtp_command = /usr/sbin/sendmail -t -oi
+
+
+[pooling:catalog]
+
+#
+# From zaqar.storage.pooling
+#
+
+# If enabled, the message_store will be used as the storage for the
+# virtual pool. (boolean value)
+enable_virtual_pool = true
+
+
+[signed_url]
+
+#
+# From zaqar.common.configs
+#
+
+# Secret key used to encrypt pre-signed URLs. (string value)
+secret_key = {{ zaqar_secret_key }}
+
+
+[storage]
+
+#
+# From zaqar.storage.pipeline
+#
+
+# Pipeline to use for processing queue operations. This pipeline will
+# be consumed before calling the storage driver's controller methods.
+# (list value)
+#queue_pipeline =
+
+# Pipeline to use for processing message operations. This pipeline
+# will be consumed before calling the storage driver's controller
+# methods. (list value)
+{% if zaqar_enable_notification %}
+message_pipeline = zaqar.notification.notifier
+{% endif %}
+#message_pipeline =
+
+# Pipeline to use for processing claim operations. This pipeline will
+# be consumed before calling the storage driver's controller methods.
+# (list value)
+#claim_pipeline =
+
+# Pipeline to use for processing subscription operations. This
+# pipeline will be consumed before calling the storage driver's
+# controller methods. (list value)
+#subscription_pipeline =
+
+
+[transport]
+
+#
+# From zaqar.transport.base
+#
+
+# Defines how long a message will be accessible. (integer value)
+#default_message_ttl = 3600
+
+# Defines how long a message will be in claimed state. (integer value)
+#default_claim_ttl = 300
+
+# Defines the message grace period in seconds. (integer value)
+#default_claim_grace = 60
+
+#
+# From zaqar.transport.validation
+#
+
+# Defines the maximum number of queues per page. (integer value)
+# Deprecated group/name - [limits:transport]/queue_paging_uplimit
+#max_queues_per_page = 20
+
+# Defines the maximum number of messages per page. (integer value)
+# Deprecated group/name - [limits:transport]/message_paging_uplimit
+#max_messages_per_page = 20
+
+# Defines the maximum number of subscriptions per page. (integer
+# value)
+# Deprecated group/name - [limits:transport]/subscription_paging_uplimit
+#max_subscriptions_per_page = 20
+
+# The maximum number of messages that can be claimed (OR) popped in a
+# single request (integer value)
+# Deprecated group/name - [DEFAULT]/max_messages_per_claim
+#max_messages_per_claim_or_pop = 20
+
+# Defines the maximum amount of metadata in a queue. (integer value)
+# Deprecated group/name - [limits:transport]/metadata_size_uplimit
+#max_queue_metadata = 65536
+
+# Defines the maximum size of message posts. (integer value)
+# Deprecated group/name - [DEFAULT]/max_message_size
+# Deprecated group/name - [limits:transport]/message_size_uplimit
+#max_messages_post_size = 262144
+
+# Maximum amount of time a message will be available. (integer value)
+# Deprecated group/name - [limits:transport]/message_ttl_max
+#max_message_ttl = 1209600
+
+# Maximum length of a message in claimed state. (integer value)
+# Deprecated group/name - [limits:transport]/claim_ttl_max
+#max_claim_ttl = 43200
+
+# Defines the maximum message grace period in seconds. (integer value)
+# Deprecated group/name - [limits:transport]/claim_grace_max
+#max_claim_grace = 43200
+
+# Defines supported subscriber types. (list value)
+#subscriber_types = http,https,mailto

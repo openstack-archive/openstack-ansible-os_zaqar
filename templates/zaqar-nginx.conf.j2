@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+
+server {
+    listen {{ zaqar_api_bind_port }};
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/tmp/zaqar.sock;
+    }
+}

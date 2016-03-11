@@ -1,0 +1,152 @@
+---
+# Copyright 2015, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Verbosity Options
+debug: False
+verbose: True
+
+## APT Cache options
+cache_timeout: 600
+
+# Name of the virtual env to deploy into
+zaqar_venv_tag: untagged
+zaqar_venv_bin: "/openstack/venvs/zaqar-{{ zaqar_venv_tag }}/bin"
+
+# Set this to enable or disable installing in a venv
+zaqar_venv_enabled: true
+
+# The bin path defaults to the venv path however if installation in a
+# venv is disabled the bin path will be dynamically set based on the
+# system path used when the installing.
+zaqar_bin: "{{ zaqar_venv_bin }}"
+
+zaqar_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/zaqar.tgz
+
+zaqar_git_repo: https://github.com/openstack/zaqar
+zaqar_git_install_branch: master
+
+zaqar_standalone_mode: false
+zaqar_developer_constraints:
+  - "git+{{ zaqar_git_repo }}@{{ zaqar_git_install_branch }}#egg=zaqar"
+
+## System info
+zaqar_system_user_name: zaqar
+zaqar_system_group_name: zaqar
+zaqar_system_shell: /bin/false
+zaqar_system_comment: zaqar system user
+zaqar_system_user_home: "/var/lib/{{ zaqar_system_user_name }}"
+
+## Service API info
+zaqar_api_bind_address: 0.0.0.0
+zaqar_api_bind_port: 8888
+zaqar_service_proto: http
+zaqar_api_program_name: zaqar-server
+zaqar_service_region: RegionOne
+zaqar_service_name: zaqar
+zaqar_service_type: messaging
+zaqar_service_description: "Zaqar messaging service"
+zaqar_service_role_name: admin
+zaqar_service_user_name: zaqar
+zaqar_service_user_password: passw0rd
+zaqar_service_tenant_name: service
+zaqar_service_project_name: service
+zaqar_service_project_domain_id: default
+zaqar_service_user_domain_id: default
+zaqar_service_registry_proto: "{{ zaqar_service_proto }}"
+zaqar_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(zaqar_service_proto) }}"
+zaqar_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(zaqar_service_proto) }}"
+zaqar_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(zaqar_service_proto) }}"
+zaqar_service_publicuri: "{{ zaqar_service_publicuri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_publicurl: "{{ zaqar_service_publicuri }}"
+zaqar_service_internaluri: "{{ zaqar_service_internaluri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_internalurl: "{{ zaqar_service_internaluri }}"
+zaqar_service_adminuri: "{{ zaqar_service_adminuri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_adminurl: "{{ zaqar_service_adminuri }}"
+zaqar_service_cafile_path: /opt/stack/data/ca-bundle.pem
+zaqar_keystone_auth_plugin: password
+
+## Apache setup
+zaqar_install_apache: false
+zaqar_apache_log_level: debug
+zaqar_wsgi_threads: 5
+zaqar_wsgi_processes: "{{ ansible_processor_vcpus | default (1) * 2 }}"
+
+## Nginx setup
+zaqar_install_nginx: false
+
+## Management DB info
+zaqar_mgmt_database_user: zaqar
+zaqar_mgmt_database_password: password
+zaqar_mgmt_database_name: zaqar
+zaqar_mgmt_db_type: mysql+pymysql
+zaqar_mgmt_db_address: "{{ inventory_hostname }}"
+zaqar_mgmt_db_port: 27017
+zaqar_mgmt_db_options: "?charset=utf8"
+zaqar_mgmt_db_connection_string: "{{ zaqar_mgmt_db_type }}://{{ zaqar_mgmt_database_user }}:{{ zaqar_mgmt_database_password }}@{{ zaqar_mgmt_db_address }}:{{ zaqar_mgmt_db_port }}/{{ zaqar_mgmt_database_name }}{{ zaqar_mgmt_db_options }}"
+
+## Message DB info
+zaqar_message_database_user: zaqar
+zaqar_message_database_password: password
+zaqar_message_db_type: mongodb
+zaqar_message_db_address: localhost
+zaqar_message_db_port: 27017
+zaqar_message_db_connection_string: "{{ zaqar_message_db_type }}://{{ zaqar_message_database_user }}:{{ zaqar_message_database_password }}@{{ zaqar_message_db_address }}:{{ zaqar_message_db_port }}"
+
+## Token Cache
+zaqar_memcached_servers: "{{ memcached_servers }}"
+zaqar_memcache_security_strategy: ENCRYPT
+
+## Zaqar config
+zaqar_enable_pooling: true
+zaqar_secret_key: notreallysecret
+zaqar_enable_notification: false
+zaqar_unreliable: true
+
+# Common apt packages
+zaqar_apt_packages:
+  - gcc
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+  - zlib1g-dev
+  - apache2
+  - nginx
+  - libapache2-mod-wsgi
+
+# zaqar packages that must be installed before anything else
+zaqar_requires_pip_packages:
+  - virtualenv
+  - virtualenv-tools
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+
+# Common pip packages
+zaqar_pip_packages:
+  - zaqar
+  - python-zaqarclient
+  - PyMySQL
+  - python-memcached
+  - keystonemiddleware
+  - pymongo
+  - uwsgi
+
+## Tunable overrides
+zaqar_zaqar_conf_overrides: {}
+
+## Hacking Keystone related vars
+keystone_service_adminuri_insecure: true
+keystone_auth_admin_token: ADMIN
+keystone_service_adminurl: http://192.168.33.12:35357/v3
+keystone_service_adminuri: http://192.168.33.12:35357
+keystone_service_internaluri: http://192.168.33.12:5000
