@@ -26,6 +26,46 @@
   tags:
     - zaqar-apt-packages
 
+- name: Create developer mode constraint file
+  copy:
+    dest: "/opt/developer-pip-constraints.txt"
+    content: |
+      {% for item in zaqar_developer_constraints %}
+      {{ item }}
+      {% endfor %}
+  when:
+    - zaqar_developer_mode | bool
+    - not zaqar_local_mode | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Clone requirements git repository
+  git:
+    repo: "{{ zaqar_requirements_git_repo }}"
+    dest: "/opt/requirements"
+    clone: yes
+    update: yes
+    version: "{{ zaqar_requirements_git_install_branch }}"
+  when:
+    - zaqar_developer_mode | bool
+    - not zaqar_local_mode | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Add constraints to pip_install_options fact for developer mode
+  set_fact:
+    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
+  when:
+    - zaqar_developer_mode | bool
+    - "'/opt/developer-pip-constraints.txt' not in pip_install_options|default('')"
+    - "'/opt/requirements/upper-constraints.txt' not in pip_install_options|default('')"
+    - not zaqar_local_mode | bool
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
 - name: Install apt packages
   apt:
     pkg: "{{ item }}"
@@ -39,28 +79,6 @@
     - zaqar-install
     - zaqar-apt-packages
 
-- name: Create developer mode constraint file
-  copy:
-    dest: "/opt/developer-pip-constraints.txt"
-    content: |
-      {% for item in zaqar_developer_constraints %}
-      {{ item }}
-      {% endfor %}
-  when:
-    - zaqar_standalone_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Set constraint file fact for developer mode
-  set_fact:
-    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt"
-  when:
-    - zaqar_standalone_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
 - name: Install requires pip packages
   pip:
     name: "{{ item }}"
@@ -71,6 +89,32 @@
   retries: 5
   delay: 2
   with_items: zaqar_requires_pip_packages
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Get local venv checksum
+  stat:
+    path: "/var/cache/{{ zaqar_venv_download_url | basename }}"
+    get_md5: False
+  when:
+    - not zaqar_developer_mode | bool
+    - zaqar_venv_enabled | bool
+    - not zaqar_local_mode | bool
+  register: local_venv_stat
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Get remote venv checksum
+  uri:
+    url: "{{ zaqar_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when:
+    - not zaqar_developer_mode | bool
+    - zaqar_venv_enabled | bool
+    - not zaqar_local_mode | bool
+  register: remote_venv_checksum
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -88,8 +132,22 @@
   ignore_errors: true
   register: get_venv
   when:
-    - not zaqar_standalone_mode | bool
+    - not zaqar_developer_mode | bool
+    - not zaqar_local_mode | bool
     - zaqar_venv_enabled | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
+  tags:
+    - zaqar-install
+    - zaqar-pip-packages
+
+- name: Copy pre-build venv package
+  copy:
+    src: "{{ zaqar_venv_localpath }}"
+    dest: "/var/cache/"
+  register: get_venv
+  when:
+    - zaqar_local_mode | bool
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -118,7 +176,7 @@
     path: "{{ zaqar_venv_bin | dirname }}"
     state: directory
   when:
-    - not zaqar_standalone_mode | bool
+    - not zaqar_developer_mode | bool or zaqar_local_mode | bool
     - zaqar_venv_enabled | bool
     - zaqar_get_venv | changed
   tags:
@@ -131,11 +189,11 @@
     dest: "{{ zaqar_venv_bin | dirname }}"
     copy: "no"
   when:
-    - not zaqar_standalone_mode | bool
+    - not zaqar_developer_mode | bool or zaqar_local_mode | bool
     - zaqar_venv_enabled | bool
     - zaqar_get_venv | changed
-  notify:
-    - Restart zaqar api
+#  notify:
+#    - Restart zaqar api
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -144,7 +202,7 @@
   command: >
     virtualenv-tools --update-path=auto {{ zaqar_venv_bin | dirname }}
   when:
-    - not zaqar_standalone_mode | bool
+    - not zaqar_developer_mode | bool or zaqar_local_mode | bool
     - zaqar_venv_enabled | bool
     - zaqar_get_venv | success
   tags:
@@ -165,7 +223,7 @@
   with_items: zaqar_pip_packages
   when:
     - zaqar_venv_enabled | bool
-    - zaqar_get_venv | failed or zaqar_standalone_mode | bool
+    - zaqar_get_venv | failed or zaqar_developer_mode | bool or zaqar_local_mode | bool
 #  notify:
 #    - Restart zaqar api
   tags:
@@ -183,8 +241,9 @@
   delay: 2
   with_items: zaqar_pip_packages
   when:
-    - not zaqar_standalone_mode | bool
+    - not zaqar_developer_mode | bool
     - not zaqar_venv_enabled | bool
+    - not zaqar_local_mode | bool
 #  notify:
 #    - Restart zaqar api
   tags:
