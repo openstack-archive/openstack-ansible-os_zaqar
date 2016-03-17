@@ -16,8 +16,10 @@
 - name: Ensure zaqar service
   keystone:
     command: "ensure_service"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     service_name: "{{ zaqar_service_name }}"
     service_type: "{{ zaqar_service_type }}"
     description: "{{ zaqar_service_description }}"
@@ -35,8 +37,10 @@
     command: ensure_project
     project_name: "{{ zaqar_service_tenant_name }}"
     region_name: "{{ zaqar_service_region }}"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   tags:
     - zaqar-setup
@@ -45,8 +49,10 @@
 - name: Ensure zaqar user
   keystone:
     command: "ensure_user"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     user_name: "{{ zaqar_service_user_name }}"
     tenant_name: "{{ zaqar_service_tenant_name }}"
     password: "{{ zaqar_service_user_password }}"
@@ -62,8 +68,10 @@
 - name: Ensure zaqar user to admin role
   keystone:
     command: "ensure_user_role"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     user_name: "{{ zaqar_service_user_name }}"
     tenant_name: "{{ zaqar_service_project_name }}"
     role_name: "{{ zaqar_service_role_name }}"
@@ -81,8 +89,10 @@
 - name: Ensure zaqar endpoint
   keystone:
     command: "ensure_endpoint"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     region_name: "{{ zaqar_service_region }}"
     service_name: "{{ zaqar_service_name }}"
     service_type: "{{ zaqar_service_type }}"

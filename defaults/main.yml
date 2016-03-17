@@ -146,10 +146,3 @@ zaqar_pip_packages:
 
 ## Tunable overrides
 zaqar_zaqar_conf_overrides: {}
-
-## Hacking Keystone related vars
-keystone_service_adminuri_insecure: true
-keystone_auth_admin_token: ADMIN
-keystone_service_adminurl: http://192.168.33.12:35357/v3
-keystone_service_adminuri: http://192.168.33.12:35357
-keystone_service_internaluri: http://192.168.33.12:5000

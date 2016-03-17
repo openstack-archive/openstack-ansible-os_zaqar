@@ -22,3 +22,6 @@
       zaqar_install_nginx: true
       zaqar_api_bind_address: 192.168.33.11
       zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
+      keystone_admin_user_name: admin
+      keystone_admin_tenant_name: admin
+      keystone_auth_admin_password: "SuperSecretePassword"
