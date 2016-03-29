@@ -29,7 +29,7 @@
 # at boot time. Here is just for testing purpose.
 - name: Run uwsgi service
   command: >
-    /usr/local/bin/uwsgi
+    {{ zaqar_bin }}/uwsgi
     --socket /tmp/zaqar.sock
     --pythonpath /var/www/cgi-bin/zaqar/
     --module app
