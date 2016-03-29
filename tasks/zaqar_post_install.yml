@@ -13,20 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Copy zaqar servie config
+- name: Copy zaqar service config
   config_template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "zaqar.conf.j2"
+    dest: "/etc/zaqar/zaqar.conf"
     owner: "{{ zaqar_system_user_name }}"
     group: "{{ zaqar_system_group_name }}"
     mode: "0644"
-    config_overrides: "{{ item.config_overrides }}"
-    config_type: "{{ item.config_type }}"
-  with_items:
-    - src: "zaqar.conf.j2"
-      dest: "/etc/zaqar/zaqar.conf"
-      config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
-      config_type: "ini"
+    config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
+    config_type: "ini"
 #  notify: Restart zaqar api
   tags:
     - zaqar-config
@@ -34,8 +29,8 @@
 
 - name: Copy zaqar logging config
   copy:
-      src: "logging.conf"
-      dest: "/etc/zaqar/logging.conf"
+    src: "logging.conf"
+    dest: "/etc/zaqar/logging.conf"
 #  notify: Restart zaqar api
   tags:
     - zaqar-config

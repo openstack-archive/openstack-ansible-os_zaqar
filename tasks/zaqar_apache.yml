@@ -15,13 +15,11 @@
 
 - name: Add zaqar apache WSGI script
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "zaqar-wsgi.py.j2"
+    dest: "/var/www/cgi-bin/zaqar/app"
     owner: "{{ zaqar_system_user_name }}"
     group: "{{ zaqar_system_group_name }}"
-    mode: "{{ item.mode|default('0644') }}"
-  with_items:
-    - { src: "zaqar-wsgi.py.j2", dest: "/var/www/cgi-bin/zaqar/app", mode: "0755" }
+    mode: "0755"
   notify:
     - Restart Apache
   tags:
@@ -29,12 +27,10 @@
 
 - name: Add zaqar apache configuration file
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "zaqar-httpd.conf.j2"
+    dest: "/etc/apache2/sites-available/zaqar-httpd.conf"
     owner: "root"
     group: "root"
-  with_items:
-    - { src: "zaqar-httpd.conf.j2", dest: "/etc/apache2/sites-available/zaqar-httpd.conf" }
   notify:
     - Restart Apache
   tags:
@@ -51,11 +47,9 @@
 
 - name: Enabled zaqar vhost
   file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: "{{ item.state }}"
-  with_items:
-    - { src: "/etc/apache2/sites-available/zaqar-httpd.conf", dest: "/etc/apache2/sites-enabled/zaqar-httpd.conf", state: "link" }
+    src: "/etc/apache2/sites-available/zaqar-httpd.conf"
+    dest: "/etc/apache2/sites-enabled/zaqar-httpd.conf"
+    state: "link"
   notify:
     - Restart Apache
   tags:

@@ -15,13 +15,11 @@
 
 - name: Add zaqar nginx WSGI script
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "zaqar-wsgi.py.j2"
+    dest: "/var/www/cgi-bin/zaqar/app.py"
     owner: "{{ zaqar_system_user_name }}"
     group: "{{ zaqar_system_group_name }}"
-    mode: "{{ item.mode|default('0644') }}"
-  with_items:
-    - { src: "zaqar-wsgi.py.j2", dest: "/var/www/cgi-bin/zaqar/app.py", mode: "0755" }
+    mode: "0755"
   notify:
     - Restart Nginx
   tags:
@@ -45,12 +43,10 @@
 
 - name: Add zaqar nginx configuration file
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "zaqar-nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/zaqar-nginx.conf"
     owner: "root"
     group: "root"
-  with_items:
-    - { src: "zaqar-nginx.conf.j2", dest: "/etc/nginx/sites-available/zaqar-nginx.conf" }
   notify:
     - Restart Nginx
   tags:
@@ -58,11 +54,9 @@
 
 - name: Enabled zaqar vhost
   file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: "{{ item.state }}"
-  with_items:
-    - { src: "/etc/nginx/sites-available/zaqar-nginx.conf", dest: "/etc/nginx/sites-enabled/zaqar-nginx.conf", state: "link" }
+    src: "/etc/nginx/sites-available/zaqar-nginx.conf"
+    dest: "/etc/nginx/sites-enabled/zaqar-nginx.conf"
+    state: "link"
   notify:
     - Restart Nginx
   tags:
