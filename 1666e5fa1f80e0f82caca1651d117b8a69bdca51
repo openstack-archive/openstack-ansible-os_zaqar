@@ -1,0 +1,10 @@
+Code-Review+2: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Code-Review+2: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Workflow+1: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Code-Review+1: Jean-Philippe Evrard <jean-philippe.evrard@rackspace.co.uk>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 04 May 2016 17:30:53 +0000
+Reviewed-on: https://review.openstack.org/312557
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
