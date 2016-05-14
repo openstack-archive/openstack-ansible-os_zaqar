@@ -1,5 +1,4 @@
----
-# Copyright 2016, Comcast Corporation
+# Copyright 2016, Rackspace, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
-
-# Install RabbitMQ/MariaDB
-- include: test-install-infra.yml
-
-# Install Keystone
-- include: test-install-keystone.yml
-
-# Install Zaqar
-- include: test-install-zaqar.yml
+zaqar_apt_packages:
+  - gcc
+  - libxml2-dev
+  - libxslt1-dev
+  - libpython-dev
+  - python2.7-dev
+  - python-dev
+  - zlib1g-dev
+  - apache2
+  - nginx
+  - libapache2-mod-wsgi
