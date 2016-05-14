@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Comcast Corporation
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
+- name: yum clean all
+  command: "/usr/bin/yum clean all"
+  register: yum_clean
+  until: yum_clean | succes
+  tags:
+    - zaqar-yum-packages
 
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
-
-# Install RabbitMQ/MariaDB
-- include: test-install-infra.yml
-
-# Install Keystone
-- include: test-install-keystone.yml
-
-# Install Zaqar
-- include: test-install-zaqar.yml
+- name: Install zaqar yum packages
+  yum:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_yum_packages
+  until: install_yum_packages | success
+  retries: 5
+  delay: 2
+  with_items: zaqar_server_packages
+  tags:
+    - zaqar-yum-packages
