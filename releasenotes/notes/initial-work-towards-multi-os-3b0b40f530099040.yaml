@@ -1,0 +1,4 @@
+---
+features:
+  - Implemented the ground work to enable Ubuntu 16.04
+    and CentOS 7 support.
