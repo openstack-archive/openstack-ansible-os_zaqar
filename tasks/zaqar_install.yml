@@ -12,19 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-- name: Check apt last update file
-  stat:
-    path: /var/cache/apt
-  register: apt_cache_stat
+- include: install-apt.yml
+  when:
+    - ansible_pkg_mgr == 'apt'
   tags:
-    - zaqar-apt-packages
-
-- name: Update apt if needed
-  apt:
-    update_cache: yes
-  when: "ansible_date_time.epoch|float - apt_cache_stat.stat.mtime > {{cache_timeout}}"
-  tags:
-    - zaqar-apt-packages
+    - install-apt
 
 - name: Create developer mode constraint file
   copy:
@@ -65,19 +57,6 @@
   tags:
     - zaqar-install
     - zaqar-pip-packages
-
-- name: Install apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
-  with_items: zaqar_apt_packages
-  tags:
-    - zaqar-install
-    - zaqar-apt-packages
 
 - name: Install requires pip packages
   pip:
