@@ -5,6 +5,8 @@ OpenStack-Ansible Zaqar
 
 This Ansible role installs and configures OpenStack Zaqar.
 
+Linux Distribution Support:  Ubuntu 14.04
+
 Default Variables
 =================
 
