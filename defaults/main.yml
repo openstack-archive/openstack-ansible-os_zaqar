@@ -16,9 +16,6 @@
 ## Verbosity Option
 debug: False
 
-## APT Cache options
-cache_timeout: 600
-
 # Name of the virtual env to deploy into
 zaqar_venv_tag: untagged
 zaqar_venv_bin: "/openstack/venvs/zaqar-{{ zaqar_venv_tag }}/bin"
@@ -115,17 +112,6 @@ zaqar_enable_pooling: true
 zaqar_secret_key: notreallysecret
 zaqar_enable_notification: false
 zaqar_unreliable: true
-
-# Common apt packages
-zaqar_apt_packages:
-  - gcc
-  - libxml2-dev
-  - libxslt1-dev
-  - python-dev
-  - zlib1g-dev
-  - apache2
-  - nginx
-  - libapache2-mod-wsgi
 
 # zaqar packages that must be installed before anything else
 zaqar_requires_pip_packages:
