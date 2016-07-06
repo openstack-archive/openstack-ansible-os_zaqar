@@ -51,17 +51,6 @@
   tags:
     - zaqar-dirs
 
-- name: Create zaqar venv dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-  with_items:
-    - { path: "/openstack/venvs" }
-    - { path: "{{ zaqar_venv_bin }}" }
-  when: zaqar_venv_enabled | bool
-  tags:
-    - zaqar-dirs
-
 - name: Test for log directory or link
   shell: |
     if [ -h "/var/log/zaqar"  ]; then
