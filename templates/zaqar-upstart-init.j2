@@ -25,9 +25,7 @@ pre-start script
   mkdir -p "/var/lock/{{ zaqar_api_program_name }}"
   chown {{ zaqar_system_user_name }}:{{ zaqar_system_group_name }} "/var/lock/{{ zaqar_api_program_name }}"
 
-  {% if zaqar_venv_enabled | bool -%}
-  . {{ zaqar_venv_bin }}/activate
-  {%- endif %}
+  . {{ zaqar_bin }}/activate
 
 end script
 

@@ -36,18 +36,3 @@
     - zaqar-config
     - zaqar-post-install
 
-- name: Get zaqar command path
-  command: which zaqar
-  register: zaqar_command_path
-  when:
-    - not zaqar_venv_enabled | bool
-  tags:
-    - zaqar-command-bin
-
-- name: Set zaqar command path
-  set_fact:
-    zaqar_bin: "{{ zaqar_command_path.stdout | dirname }}"
-  when:
-    - not zaqar_venv_enabled | bool
-  tags:
-    - zaqar-command-bin
