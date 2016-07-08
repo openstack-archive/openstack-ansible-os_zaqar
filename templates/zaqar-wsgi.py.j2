@@ -14,10 +14,8 @@
 
 import os
 
-{% if zaqar_venv_enabled | bool %}
-activate_this = os.path.expanduser("{{ zaqar_venv_bin }}/activate_this.py")
+activate_this = os.path.expanduser("{{ zaqar_bin }}/activate_this.py")
 execfile(activate_this, dict(__file__=activate_this))
-{% endif %}
 
 from keystonemiddleware import auth_token
 from zaqar.transport.wsgi import app
