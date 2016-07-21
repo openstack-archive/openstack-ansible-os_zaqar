@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Workflow+1: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 21 Jul 2016 22:05:50 +0000
+Reviewed-on: https://review.openstack.org/345623
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
