@@ -23,6 +23,6 @@ zaqar_apt_packages:
   - python2.7-dev
   - python-dev
   - zlib1g-dev
-  - apache2
-  - nginx
-  - libapache2-mod-wsgi
+  - "{% if zaqar_install_apache %}apache2{% endif %}"
+  - "{% if zaqar_install_apache %}libapache2-mod-wsgi{% endif %}"
+  - "{% if zaqar_install_nginx %}nginx{% endif %}"

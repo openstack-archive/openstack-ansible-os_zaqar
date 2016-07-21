@@ -25,12 +25,15 @@
   tags:
     - zaqar-httpd
 
-- name: Add zaqar apache configuration file
+- name: Add zaqar apache configuration files
   template:
-    src: "zaqar-httpd.conf.j2"
-    dest: "/etc/apache2/sites-available/zaqar-httpd.conf"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "root"
     group: "root"
+  with_items:
+    - { src: "zaqar_apache_ports.conf.j2", dest: "/etc/apache2/ports.conf" }
+    - { src: "zaqar-httpd.conf.j2", dest: "/etc/apache2/sites-available/zaqar-httpd.conf" }
   notify:
     - Restart Apache
   tags:

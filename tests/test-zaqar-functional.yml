@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Comcast Corporation
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,23 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
-
-# Prepare the containers
-- include: test-prepare-containers.yml
-
-# Install RabbitMQ/MariaDB
-- include: test-install-infra.yml
-
-# Install Keystone
-- include: test-install-keystone.yml
-
-# Install Zaqar
-- include: test-install-zaqar.yml
-
-# Test Zaqar
-- include: test-zaqar-functional.yml
+- name: Playbook for functional testing of zaqar
+  hosts: zaqar_all
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Install testing pip packages
+      pip:
+        name: "httplib2"
+    - name: Check the zaqar-api
+      uri:
+        url: "http://localhost:8888"
+        status_code: 401

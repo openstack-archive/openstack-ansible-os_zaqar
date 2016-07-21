@@ -19,7 +19,7 @@
   roles:
     - role: "{{ rolename | basename }}"
       zaqar_developer_mode: true
-      zaqar_install_nginx: true
+      zaqar_install_apache: true
       zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
       external_lb_vip_address: 10.100.100.2
       internal_lb_vip_address: 10.100.100.2

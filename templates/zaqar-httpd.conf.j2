@@ -1,7 +1,5 @@
 # {{ ansible_managed }}
 
-Listen {{ zaqar_api_bind_port }}
-
 <VirtualHost *:{{ zaqar_api_bind_port }}>
     WSGIDaemonProcess     zaqar-api user={{ zaqar_system_user_name }} group={{ zaqar_system_group_name }} processes={{ zaqar_wsgi_processes }} threads={{ zaqar_wsgi_threads }} display-name=%{GROUP}
     WSGIProcessGroup      zaqar-api
