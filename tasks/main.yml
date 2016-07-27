@@ -32,8 +32,6 @@
   when: >
     inventory_hostname == groups['zaqar_all'][0]
 
-#- include: zaqar_upstart_init.yml
-
 - include: zaqar_apache.yml
   when: zaqar_install_apache | bool
 
