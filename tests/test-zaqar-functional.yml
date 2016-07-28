@@ -25,3 +25,11 @@
       uri:
         url: "http://localhost:8888"
         status_code: 401
+    - name: Run tempest
+      shell: |
+        . {{ tempest_bin }}/activate
+        {{ tempest_bin | dirname }}/run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} zaqar.tests.tempest_plugin.tests.v2.test_queues zaqar.tests.tempest_plugin.tests.v2.test_claims zaqar.tests.tempest_plugin.tests.v2.test_messages zaqar.tests.tempest_plugin.tests.v2.test_subscriptions
+      environment:
+        RUN_TEMPEST_OPTS: "--serial"
+  vars_files:
+    - test-vars.yml

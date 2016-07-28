@@ -31,5 +31,8 @@
 # Install Zaqar
 - include: test-install-zaqar.yml
 
+# Install Tempest
+- include: test-install-tempest.yml
+
 # Test Zaqar
 - include: test-zaqar-functional.yml
