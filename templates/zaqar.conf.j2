@@ -200,7 +200,7 @@ uri = {{ zaqar_mgmt_db_connection_string }}
 # ``ssl_keyfile``, ``ssl_certfile``, ``ssl_cert_reqs``,
 # ``ssl_ca_certs`` need to be set accordingly. (string value)
 # Deprecated group/name - [drivers:storage:mongodb]/uri
-#uri = <None>
+uri = {{ zaqar_message_db_connection_string }}
 
 # Database name. (string value)
 # Deprecated group/name - [drivers:storage:mongodb]/database

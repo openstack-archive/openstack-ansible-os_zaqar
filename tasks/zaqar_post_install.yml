@@ -15,14 +15,22 @@
 
 - name: Copy zaqar service config
   config_template:
-    src: "zaqar.conf.j2"
-    dest: "/etc/zaqar/zaqar.conf"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "{{ zaqar_system_user_name }}"
     group: "{{ zaqar_system_group_name }}"
     mode: "0644"
-    config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
-    config_type: "ini"
-#  notify: Restart zaqar api
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "zaqar.conf.j2"
+      dest: "/etc/zaqar/zaqar.conf"
+      config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
+      config_type: "json"
+    - src: "policy.json.j2"
+      dest: "/etc/zaqar/policy.json"
+      config_overrides: "{{ zaqar_policy_overrides }}"
+      config_type: "json"
   tags:
     - zaqar-config
     - zaqar-post-install

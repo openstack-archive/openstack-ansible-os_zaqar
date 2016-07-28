@@ -79,17 +79,16 @@ zaqar_install_nginx: false
 
 ## Management DB info
 zaqar_mgmt_database_user: zaqar
-zaqar_mgmt_database_password: password
+# zaqar_mgmt_database_password:
 zaqar_mgmt_database_name: zaqar
 zaqar_mgmt_db_type: mysql+pymysql
-zaqar_mgmt_db_address: "{{ inventory_hostname }}"
-zaqar_mgmt_db_port: 27017
+zaqar_mgmt_db_address: localhost
 zaqar_mgmt_db_options: "?charset=utf8"
-zaqar_mgmt_db_connection_string: "{{ zaqar_mgmt_db_type }}://{{ zaqar_mgmt_database_user }}:{{ zaqar_mgmt_database_password }}@{{ zaqar_mgmt_db_address }}:{{ zaqar_mgmt_db_port }}/{{ zaqar_mgmt_database_name }}{{ zaqar_mgmt_db_options }}"
+zaqar_mgmt_db_connection_string: "{{ zaqar_mgmt_db_type }}://{{ zaqar_mgmt_database_user }}:{{ zaqar_mgmt_database_password }}@{{ zaqar_mgmt_db_address }}/{{ zaqar_mgmt_database_name }}{{ zaqar_mgmt_db_options }}"
 
 ## Message DB info
 zaqar_message_database_user: zaqar
-zaqar_message_database_password: password
+# zaqar_message_database_password: password
 zaqar_message_db_type: mongodb
 zaqar_message_db_address: localhost
 zaqar_message_db_port: 27017
@@ -123,3 +122,4 @@ zaqar_pip_packages:
 
 ## Tunable overrides
 zaqar_zaqar_conf_overrides: {}
+zaqar_policy_overrides: {}
