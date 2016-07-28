@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Catalyst IT Limited
+# Copyright 2015, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install zaqar server
-  hosts: zaqar_all
+- name: Playbook for deploying tempest
+  hosts: openstack1
   user: root
+  gather_facts: true
   roles:
-    - role: "{{ rolename | basename }}"
+    - role: "os_tempest"
   vars_files:
     - test-vars.yml
