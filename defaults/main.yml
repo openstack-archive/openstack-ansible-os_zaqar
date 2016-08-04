@@ -125,5 +125,11 @@ zaqar_pip_packages:
   - pymongo
   - uwsgi
 
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+zaqar_role_project_group: zaqar_all
+
 ## Tunable overrides
 zaqar_zaqar_conf_overrides: {}
