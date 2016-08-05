@@ -1,0 +1,10 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+1: Ian Cordasco <ian.cordasco@rackspace.com>
+Code-Review+2: David Wilde <david.wilde@rackspace.com>
+Workflow+1: David Wilde <david.wilde@rackspace.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 05 Aug 2016 01:51:41 +0000
+Reviewed-on: https://review.openstack.org/351317
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
