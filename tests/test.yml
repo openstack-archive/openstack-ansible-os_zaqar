@@ -13,20 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Prepare the user ssh keys
-- include: test-prepare-keys.yml
-
-# Prepare the host
-- include: test-prepare-host.yml
+# Setup the host
+- include: playbooks/test-setup-host.yml
 
 # Prepare the containers
-- include: test-prepare-containers.yml
+- include: playbooks/test-prepare-containers.yml
 
 # Install RabbitMQ/MariaDB
-- include: test-install-infra.yml
+- include: playbooks/test-install-infra.yml
 
 # Install Keystone
-- include: test-install-keystone.yml
+- include: playbooks/test-install-keystone.yml
 
 # Install Zaqar
 - include: test-install-zaqar.yml
