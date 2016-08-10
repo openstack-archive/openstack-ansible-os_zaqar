@@ -25,3 +25,5 @@
       uri:
         url: "http://localhost:8888"
         status_code: 401
+  vars_files:
+    - playbooks/test-vars.yml

@@ -21,15 +21,5 @@
       zaqar_developer_mode: true
       zaqar_install_apache: true
       zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
-      external_lb_vip_address: 10.100.100.2
-      internal_lb_vip_address: 10.100.100.2
-      keystone_admin_user_name: admin
-      keystone_admin_tenant_name: admin
-      keystone_auth_admin_password: SuperSecretePassword
-      keystone_service_adminuri_insecure: false
-      keystone_service_internaluri_insecure: false
-      keystone_service_internaluri: "http://{{ internal_lb_vip_address }}:5000"
-      keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
-      keystone_service_adminuri: "http://{{ internal_lb_vip_address }}:35357"
-      keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
-      keystone_service_region: RegionOne
+  vars_files:
+    - playbooks/test-vars.yml
