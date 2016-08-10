@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Comcast Corporation
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create ssh key pairs for use with containers
-  hosts: localhost
-  become_user: "{{ ansible_ssh_user }}"
-  pre_tasks:
-    - name: Create ssh key pair for root
-      user:
-        name: "{{ ansible_ssh_user }}"
-        generate_ssh_key: "yes"
-        ssh_key_bits: 2048
-        ssh_key_file: ".ssh/id_rsa"
-    - name: Get the calling user's key
-      command: cat ~/.ssh/id_rsa.pub
-      register: key_get
-    - set_fact:
-        lxc_container_ssh_key: "{{ key_get.stdout }}"
+bridges:
+  - "br-mgmt"
+
+ansible_python_interpreter: "/usr/bin/python2"

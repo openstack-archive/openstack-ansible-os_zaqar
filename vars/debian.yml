@@ -16,6 +16,7 @@
 cache_timeout: 600
 
 zaqar_distro_packages:
+  - "{% if zaqar_developer_mode %}git{% endif %}"
   - gcc
   - libxml2-dev
   - libxslt1-dev
@@ -26,3 +27,4 @@ zaqar_distro_packages:
   - "{% if zaqar_install_apache %}apache2{% endif %}"
   - "{% if zaqar_install_apache %}libapache2-mod-wsgi{% endif %}"
   - "{% if zaqar_install_nginx %}nginx{% endif %}"
+
