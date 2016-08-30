@@ -15,7 +15,7 @@
 ## APT Cache options
 cache_timeout: 600
 
-zaqar_apt_packages:
+zaqar_distro_packages:
   - gcc
   - libxml2-dev
   - libxslt1-dev
