@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Alexandra Settle <alexandra.settle@rackspace.com>
+Workflow+1: Alexandra Settle <alexandra.settle@rackspace.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 20 Sep 2016 10:14:26 +0000
+Reviewed-on: https://review.openstack.org/372967
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
