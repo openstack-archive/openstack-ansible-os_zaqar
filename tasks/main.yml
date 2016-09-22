@@ -29,13 +29,15 @@
 - include: zaqar_post_install.yml
 
 - include: zaqar_service_setup.yml
-  when: >
-    inventory_hostname == groups['zaqar_all'][0]
+  static: no
+  when: inventory_hostname == groups['zaqar_all'][0]
 
 - include: zaqar_apache.yml
+  static: no
   when: zaqar_install_apache | bool
 
 - include: zaqar_nginx.yml
+  static: no
   when: zaqar_install_nginx | bool
 
 - name: Flush handlers
