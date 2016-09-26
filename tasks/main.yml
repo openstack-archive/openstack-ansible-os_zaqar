@@ -29,7 +29,6 @@
 - include: zaqar_post_install.yml
 
 - include: zaqar_service_setup.yml
-  static: no
   when: inventory_hostname == groups['zaqar_all'][0]
 
 - include: zaqar_apache.yml
