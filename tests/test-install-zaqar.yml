@@ -17,9 +17,9 @@
   hosts: zaqar_all
   user: root
   roles:
-    - role: "{{ rolename | basename }}"
+    - role: "os_zaqar"
       zaqar_developer_mode: true
       zaqar_install_apache: true
       zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
   vars_files:
-    - playbooks/test-vars.yml
+    - common/test-vars.yml

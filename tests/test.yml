@@ -14,16 +14,16 @@
 # limitations under the License.
 
 # Setup the host
-- include: playbooks/test-setup-host.yml
+- include: common/test-setup-host.yml
 
 # Prepare the containers
-- include: playbooks/test-prepare-containers.yml
+- include: common/test-prepare-containers.yml
 
 # Install RabbitMQ/MariaDB
-- include: playbooks/test-install-infra.yml
+- include: common/test-install-infra.yml
 
 # Install Keystone
-- include: playbooks/test-install-keystone.yml
+- include: common/test-install-keystone.yml
 
 # Install Zaqar
 - include: test-install-zaqar.yml
