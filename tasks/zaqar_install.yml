@@ -106,7 +106,7 @@
     url: "{{ zaqar_venv_download_url }}"
     dest: "/var/cache/{{ zaqar_venv_download_url | basename }}"
     force: yes
-  ignore_errors: true
+  failed_when: false
   register: get_venv
   when:
     - not zaqar_developer_mode | bool
