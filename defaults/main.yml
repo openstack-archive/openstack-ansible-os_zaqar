@@ -29,8 +29,6 @@ zaqar_venv_localpath: /opt/kong/zaqar.tgz
 
 zaqar_git_repo: https://github.com/openstack/zaqar
 zaqar_git_install_branch: master
-zaqar_requirements_git_repo: https://git.openstack.org/openstack/requirements
-zaqar_requirements_git_install_branch: master
 zaqar_developer_mode: false
 zaqar_developer_constraints:
   - "git+{{ zaqar_git_repo }}@{{ zaqar_git_install_branch }}#egg=zaqar"

@@ -33,37 +33,13 @@
     - zaqar-install
     - zaqar-pip-packages
 
-- name: Clone requirements git repository
-  git:
-    repo: "{{ zaqar_requirements_git_repo }}"
-    dest: "/opt/requirements"
-    clone: yes
-    update: yes
-    version: "{{ zaqar_requirements_git_install_branch }}"
-  when:
-    - zaqar_developer_mode | bool
-    - not zaqar_local_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Add constraints to pip_install_options fact for developer mode
-  set_fact:
-    pip_install_options: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
-  when:
-    - zaqar_developer_mode | bool
-    - "'/opt/developer-pip-constraints.txt' not in pip_install_options|default('')"
-    - "'/opt/requirements/upper-constraints.txt' not in pip_install_options|default('')"
-    - not zaqar_local_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
 - name: Install requires pip packages
   pip:
     name: "{{ zaqar_requires_pip_packages | join(' ') }}"
     state: latest
-    extra_args: "{{ pip_install_options|default('') }}"
+    extra_args: >-
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -174,7 +150,10 @@
     state: latest
     virtualenv: "{{ zaqar_bin | dirname }}"
     virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options|default('') }}"
+    extra_args: >-
+      {{ zaqar_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
