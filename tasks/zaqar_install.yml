@@ -36,7 +36,7 @@
 - name: Install requires pip packages
   pip:
     name: "{{ zaqar_requires_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ zaqar_pip_package_state }}"
     extra_args: >-
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
@@ -147,7 +147,7 @@
 - name: Install pip packages (venv)
   pip:
     name: "{{ zaqar_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ zaqar_pip_package_state }}"
     virtualenv: "{{ zaqar_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: >-
