@@ -19,6 +19,7 @@ debug: False
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
 zaqar_package_state: "latest"
+zaqar_pip_package_state: "latest"
 
 # Name of the virtual env to deploy into
 zaqar_venv_tag: untagged

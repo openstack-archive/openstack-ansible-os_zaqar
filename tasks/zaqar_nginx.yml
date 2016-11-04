@@ -40,6 +40,7 @@
     - Restart Nginx
   tags:
     - zaqar-nginx
+    - skip_ansible_lint
 
 - name: Add zaqar nginx configuration file
   template:
