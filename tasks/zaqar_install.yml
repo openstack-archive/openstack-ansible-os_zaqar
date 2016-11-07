@@ -48,47 +48,15 @@
     - zaqar-install
     - zaqar-pip-packages
 
-- name: Get local venv checksum
-  stat:
-    path: "/var/cache/{{ zaqar_venv_download_url | basename }}"
-    get_md5: False
-  when:
-    - not zaqar_developer_mode | bool
-    - not zaqar_local_mode | bool
-  register: local_venv_stat
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Get remote venv checksum
-  uri:
-    url: "{{ zaqar_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: True
-  when:
-    - not zaqar_developer_mode | bool
-    - not zaqar_local_mode | bool
-  register: remote_venv_checksum
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
-#       a) allow us to remove force: yes
-#       b) allow the module to calculate the checksum of dest file which would
-#          result in file being downloaded only if provided and dest sha256sum
-#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ zaqar_venv_download_url }}"
     dest: "/var/cache/{{ zaqar_venv_download_url | basename }}"
-    force: yes
-  failed_when: false
-  register: get_venv
+    checksum: "sha1:{{ lookup('url', zaqar_venv_download_url | replace('tgz', 'checksum')) }}"
+  register: zaqar_get_venv
   when:
     - not zaqar_developer_mode | bool
     - not zaqar_local_mode | bool
-    - (local_venv_stat.stat.exists == False or
-        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -97,16 +65,8 @@
   copy:
     src: "{{ zaqar_venv_localpath }}"
     dest: "/var/cache/"
-  register: get_venv
-  when:
-    - zaqar_local_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Set zaqar get_venv fact
-  set_fact:
-    zaqar_get_venv: "{{ get_venv }}"
+  register: zaqar_get_venv
+  when: zaqar_local_mode | bool
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -115,8 +75,7 @@
   file:
     path: "{{ zaqar_bin | dirname }}"
     state: absent
-  when:
-    - zaqar_get_venv | changed
+  when: zaqar_get_venv | changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -158,8 +117,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when:
-    - zaqar_get_venv | failed or zaqar_developer_mode | bool or zaqar_local_mode | bool
+  when: zaqar_developer_mode | bool or zaqar_local_mode | bool
 #  notify:
 #    - Restart zaqar api
   tags:
@@ -171,7 +129,7 @@
     virtualenv-tools --update-path=auto {{ zaqar_bin | dirname }}
   when:
     - not zaqar_developer_mode | bool or zaqar_local_mode | bool
-    - zaqar_get_venv | success
+    - zaqar_get_venv | changed or zaqar_venv_dir | changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
