@@ -126,7 +126,7 @@
 
 - name: Update virtualenv path
   command: >
-    virtualenv-tools --update-path=auto {{ zaqar_bin | dirname }}
+    virtualenv-tools --update-path=auto --reinitialize {{ zaqar_bin | dirname }}
   when:
     - not zaqar_developer_mode | bool or zaqar_local_mode | bool
     - zaqar_get_venv | changed or zaqar_venv_dir | changed
