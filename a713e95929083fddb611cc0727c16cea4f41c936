@@ -1,0 +1,10 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+1: Donovan Francesco (drifterza) <donovan.francesco@gmail.com>
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 17 Nov 2016 02:27:01 +0000
+Reviewed-on: https://review.openstack.org/398214
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
