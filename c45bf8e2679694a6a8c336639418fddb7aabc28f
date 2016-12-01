@@ -1,0 +1,8 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Alexandra Settle <a.settle@outlook.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 01 Dec 2016 14:57:24 +0000
+Reviewed-on: https://review.openstack.org/405330
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
