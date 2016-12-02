@@ -1,0 +1,10 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+1: weezer su <weezer.su@rackspace.com>
+Code-Review+2: Andy McCrae <andy.mccrae@googlemail.com>
+Workflow+1: Andy McCrae <andy.mccrae@googlemail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 02 Dec 2016 16:33:15 +0000
+Reviewed-on: https://review.openstack.org/405866
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
