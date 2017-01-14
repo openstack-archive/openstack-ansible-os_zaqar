@@ -25,6 +25,9 @@ zaqar_pip_package_state: "latest"
 zaqar_venv_tag: untagged
 zaqar_bin: "/openstack/venvs/zaqar-{{ zaqar_venv_tag }}/bin"
 
+# venv_download, even when true, will use the fallback method of building the
+# venv from scratch if the venv download fails.
+zaqar_venv_download: "{{ not zaqar_developer_mode | bool and not zaqar_local_mode | bool }}"
 zaqar_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/zaqar.tgz
 zaqar_venv_localpath: /opt/kong/zaqar.tgz
 

@@ -54,9 +54,7 @@
     dest: "/var/cache/{{ zaqar_venv_download_url | basename }}"
     checksum: "sha1:{{ lookup('url', zaqar_venv_download_url | replace('tgz', 'checksum')) }}"
   register: zaqar_get_venv
-  when:
-    - not zaqar_developer_mode | bool
-    - not zaqar_local_mode | bool
+  when: zaqar_venv_download | bool
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -85,6 +83,7 @@
     path: "{{ zaqar_bin | dirname }}"
     state: directory
   register: zaqar_venv_dir
+  when: zaqar_get_venv | changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -94,9 +93,7 @@
     src: "/var/cache/{{ zaqar_venv_download_url | basename }}"
     dest: "{{ zaqar_bin | dirname }}"
     copy: "no"
-  when:
-    - not zaqar_developer_mode | bool or zaqar_local_mode | bool
-    - zaqar_get_venv | changed or zaqar_venv_dir | changed
+  when: zaqar_get_venv | changed
 #  notify:
 #    - Restart zaqar api
   tags:
@@ -117,7 +114,7 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: zaqar_developer_mode | bool or zaqar_local_mode | bool
+  when: zaqar_get_venv | failed or zaqar_get_venv | skipped
 #  notify:
 #    - Restart zaqar api
   tags:
@@ -127,10 +124,7 @@
 - name: Update virtualenv path
   command: >
     virtualenv-tools --update-path=auto --reinitialize {{ zaqar_bin | dirname }}
-  when:
-    - not zaqar_developer_mode | bool or zaqar_local_mode | bool
-    - zaqar_get_venv | changed or zaqar_venv_dir | changed
+  when: zaqar_get_venv | changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
-
