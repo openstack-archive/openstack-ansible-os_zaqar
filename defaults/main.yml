@@ -72,7 +72,8 @@ zaqar_service_internalurl: "{{ zaqar_service_internaluri }}"
 zaqar_service_adminuri: "{{ zaqar_service_adminuri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
 zaqar_service_adminurl: "{{ zaqar_service_adminuri }}"
 zaqar_service_cafile_path: /opt/stack/data/ca-bundle.pem
-zaqar_keystone_auth_plugin: password
+zaqar_keystone_auth_plugin: "{{ zaqar_keystone_auth_type }}"
+zaqar_keystone_auth_type: password
 
 ## Apache setup
 zaqar_install_apache: false
