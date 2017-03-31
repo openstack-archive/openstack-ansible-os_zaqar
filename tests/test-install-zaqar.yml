@@ -20,6 +20,5 @@
     - role: "os_zaqar"
       zaqar_developer_mode: true
       zaqar_install_apache: true
-      zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
   vars_files:
     - common/test-vars.yml
