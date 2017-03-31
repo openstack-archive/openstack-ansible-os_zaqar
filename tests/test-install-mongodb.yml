@@ -1,0 +1,114 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install MongoDB for zaqar
+  hosts: mongo_all
+  user: root
+
+  roles:
+    - role: "pip_install"
+      tags:
+        - pip
+
+  tasks:
+    - name: Install mongo packages
+      package:
+        state: present
+        name: "{{ item }}"
+      with_items: "{{ packages_mongodb }}"
+
+    - name: Install client package (Ubuntu)
+      package:
+        state: present
+        name: "{{ item }}"
+      with_items:
+        - mongodb-clients
+        - python-pymongo
+      when: ansible_pkg_mgr == 'apt'
+
+    - name: Install client package (CentOS)
+      package:
+        state: present
+        name: mongodb
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Install pip package (CentOS)
+      pip:
+        state: latest
+        name: pymongo
+      when: ansible_pkg_mgr == 'yum'
+
+    - name: Configure the MongoDB bind address
+      lineinfile:
+        dest: "{{ mongodb_config_file }}"
+        regexp: "^(#)?bind_ip"
+        line: "bind_ip = {{ ansible_host }}"
+      register: mongodb_bind
+
+    - name: Enable the MongoDB smallfiles option
+      lineinfile:
+        dest: "{{ mongodb_config_file }}"
+        regexp: "^(#)?smallfiles"
+        line: "smallfiles = true"
+      register: mongodb_smallfiles
+
+    - name: Restart mongodb
+      service:
+        name: "{{ mongodb_service_name }}"
+        state: restarted
+        enabled: yes
+      when:
+        - mongodb_bind | changed or mongodb_smallfiles | changed
+      register: mongodb_restart
+
+    - name: Wait for mongodb to come back online after the restart
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 27017
+        delay: 5
+        timeout: 30
+      when:
+        - mongodb_restart is defined
+        - mongodb_restart | changed
+
+    - name: Test mongodb connectivity
+      command: "mongo --host {{ ansible_host }} --eval ' '"
+      changed_when: False
+
+    - name: Add admin user
+      mongodb_user:
+        login_host: "{{ ansible_host }}"
+        database: admin
+        name: root
+        password: "{{ zaqar_message_database_password }}"
+        roles: 'root'
+        state: present
+      failed_when: false
+
+    - name: Add zaqar database user
+      mongodb_user:
+        login_host: "{{ ansible_host }}"
+        login_user: "root"
+        login_password: "{{ zaqar_message_database_password }}"
+        database: "zaqar"
+        name: "{{ zaqar_message_database_user }}"
+        password: "{{ zaqar_message_database_password }}"
+        roles: 'readWrite,dbAdmin'
+        state: present
+  vars:
+    packages_mongodb:
+      - mongodb-server
+    mongodb_config_file: "{{ (ansible_pkg_mgr == 'apt') | ternary('/etc/mongodb.conf','/etc/mongod.conf') }}"
+    mongodb_service_name: "{{ (ansible_pkg_mgr == 'apt') | ternary('mongodb','mongod') }}"

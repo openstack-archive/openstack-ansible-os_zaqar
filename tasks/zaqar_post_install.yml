@@ -13,26 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Copy zaqar service config
+- name: Generate zaqar config
   config_template:
-    src: "zaqar.conf.j2"
-    dest: "/etc/zaqar/zaqar.conf"
-    owner: "{{ zaqar_system_user_name }}"
-    group: "{{ zaqar_system_group_name }}"
-    mode: "0644"
-    config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
-    config_type: "ini"
-#  notify: Restart zaqar api
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "{{ item.group | default(zaqar_system_group_name) }}"
+    mode: "0640"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  notify: Restart zaqar api
+  with_items:
+    - src: "zaqar.conf.j2"
+      dest: "/etc/zaqar/zaqar.conf"
+      config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
+      config_type: "ini"
+    - src: "zaqar-logging.conf.j2"
+      dest: "/etc/zaqar/logging.conf"
+      config_overrides: "{{ zaqar_logging_conf_overrides }}"
+      config_type: "ini"
+    - src: "policy.json.j2"
+      dest: "/etc/zaqar/policy.json"
+      config_overrides: "{{ zaqar_policy_overrides }}"
+      config_type: "json"
   tags:
     - zaqar-config
     - zaqar-post-install
-
-- name: Copy zaqar logging config
-  copy:
-    src: "logging.conf"
-    dest: "/etc/zaqar/logging.conf"
-#  notify: Restart zaqar api
-  tags:
-    - zaqar-config
-    - zaqar-post-install
-

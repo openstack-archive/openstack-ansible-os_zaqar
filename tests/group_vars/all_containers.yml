@@ -14,6 +14,7 @@
 # limitations under the License.
 
 ansible_host: "{{ ansible_host }}"
+ansible_user: root
 container_name: "{{ inventory_hostname }}"
 container_networks:
   management_address:
