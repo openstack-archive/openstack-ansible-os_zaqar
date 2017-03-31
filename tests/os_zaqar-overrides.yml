@@ -1,5 +1,5 @@
 ---
-# Copyright 2015, Rackspace US, Inc.
+# Copyright 2017, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Playbook for functional testing of zaqar
-  hosts: zaqar_all
-  user: root
-  gather_facts: false
-  tasks:
-    - name: Install testing pip packages
-      pip:
-        name: "httplib2"
-    - name: Check the zaqar-api
-      uri:
-        url: "http://localhost:8888"
-        status_code: 401
-  vars_files:
-    - common/test-vars.yml
+tempest_plugins:
+  - name: zaqar
+    repo: https://git.openstack.org/openstack/zaqar
+    branch: master
+
+tempest_test_whitelist:
+  - zaqar.tests.tempest_plugin.tests.v2
+
+zaqar_api_bind_address: "{{ hostvars[groups['zaqar_all'][0]]['ansible_host'] }}"
