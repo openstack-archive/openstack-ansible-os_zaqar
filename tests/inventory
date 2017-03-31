@@ -29,3 +29,9 @@ infra1
 
 [zaqar_all]
 openstack1
+
+[utility_all]
+infra1
+
+[mongo_all]
+openstack1
