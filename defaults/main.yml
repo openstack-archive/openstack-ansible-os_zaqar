@@ -46,7 +46,6 @@ zaqar_system_comment: zaqar system user
 zaqar_system_user_home: "/var/lib/{{ zaqar_system_user_name }}"
 
 ## Service API info
-zaqar_api_bind_address: 0.0.0.0
 zaqar_api_bind_port: 8888
 zaqar_service_proto: http
 zaqar_api_program_name: zaqar-server
@@ -65,11 +64,11 @@ zaqar_service_registry_proto: "{{ zaqar_service_proto }}"
 zaqar_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(zaqar_service_proto) }}"
 zaqar_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(zaqar_service_proto) }}"
 zaqar_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(zaqar_service_proto) }}"
-zaqar_service_publicuri: "{{ zaqar_service_publicuri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_publicuri: "{{ zaqar_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ zaqar_api_bind_port }}"
 zaqar_service_publicurl: "{{ zaqar_service_publicuri }}"
-zaqar_service_internaluri: "{{ zaqar_service_internaluri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_internaluri: "{{ zaqar_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ zaqar_api_bind_port }}"
 zaqar_service_internalurl: "{{ zaqar_service_internaluri }}"
-zaqar_service_adminuri: "{{ zaqar_service_adminuri_proto }}://{{ zaqar_api_bind_address }}:{{ zaqar_api_bind_port }}"
+zaqar_service_adminuri: "{{ zaqar_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ zaqar_api_bind_port }}"
 zaqar_service_adminurl: "{{ zaqar_service_adminuri }}"
 zaqar_service_cafile_path: /opt/stack/data/ca-bundle.pem
 zaqar_keystone_auth_plugin: "{{ zaqar_keystone_auth_type }}"
