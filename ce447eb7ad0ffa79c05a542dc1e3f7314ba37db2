@@ -1,0 +1,8 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 07 Jul 2017 00:50:20 +0000
+Reviewed-on: https://review.openstack.org/481273
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
