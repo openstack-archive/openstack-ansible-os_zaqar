@@ -32,7 +32,7 @@ zaqar_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/zaqar.tgz
 zaqar_venv_localpath: /opt/kong/zaqar.tgz
 
 zaqar_git_repo: https://github.com/openstack/zaqar
-zaqar_git_install_branch: master
+zaqar_git_install_branch: stable/pike
 zaqar_developer_mode: false
 zaqar_developer_constraints:
   - "git+{{ zaqar_git_repo }}@{{ zaqar_git_install_branch }}#egg=zaqar"
