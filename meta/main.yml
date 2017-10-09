@@ -34,3 +34,6 @@ galaxy_info:
 dependencies:
   - pip_install
   - memcached_server
+openstack_ansible_info:
+  maturity: complete
+  created_during: queens
