@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 31 Oct 2017 17:58:20 +0000
+Reviewed-on: https://review.openstack.org/516605
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/pike
