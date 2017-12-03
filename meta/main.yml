@@ -32,5 +32,4 @@ galaxy_info:
     - development
     - openstack
 dependencies:
-  - pip_install
   - memcached_server
