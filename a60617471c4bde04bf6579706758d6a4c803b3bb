@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 05 Dec 2017 14:50:09 +0000
+Reviewed-on: https://review.openstack.org/525571
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
