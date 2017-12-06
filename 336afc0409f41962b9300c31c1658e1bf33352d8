@@ -1,0 +1,9 @@
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Code-Review+2: Marc Gariépy (mgariepy) <gariepy.marc@gmail.com>
+Workflow+1: Marc Gariépy (mgariepy) <gariepy.marc@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 06 Dec 2017 14:23:23 +0000
+Reviewed-on: https://review.openstack.org/525973
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
