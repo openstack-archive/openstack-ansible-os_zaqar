@@ -115,7 +115,6 @@ zaqar_unreliable: true
 # zaqar packages that must be installed before anything else
 zaqar_requires_pip_packages:
   - virtualenv
-  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 # Common pip packages
