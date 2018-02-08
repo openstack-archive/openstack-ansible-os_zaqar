@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 08 Feb 2018 19:12:32 +0000
+Reviewed-on: https://review.openstack.org/542351
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/ocata
