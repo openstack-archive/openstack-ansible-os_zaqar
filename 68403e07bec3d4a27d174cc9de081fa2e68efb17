@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Workflow+1: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 15 Feb 2018 08:23:22 +0000
+Reviewed-on: https://review.openstack.org/544666
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
