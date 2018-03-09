@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 09 Mar 2018 14:39:06 +0000
+Reviewed-on: https://review.openstack.org/551129
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
