@@ -1,0 +1,9 @@
+Code-Review+2: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Code-Review+2: Logan V <logan2211@gmail.com>
+Workflow+1: Logan V <logan2211@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 13 Mar 2018 19:57:47 +0000
+Reviewed-on: https://review.openstack.org/552616
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
