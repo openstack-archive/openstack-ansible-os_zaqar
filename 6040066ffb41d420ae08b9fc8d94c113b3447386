@@ -1,0 +1,9 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Code-Review+2: Logan V <logan2211@gmail.com>
+Workflow+1: Logan V <logan2211@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sun, 25 Mar 2018 15:27:53 +0000
+Reviewed-on: https://review.openstack.org/556118
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
