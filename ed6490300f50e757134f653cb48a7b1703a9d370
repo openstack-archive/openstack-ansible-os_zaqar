@@ -1,0 +1,9 @@
+Code-Review+2: Logan V <logan2211@gmail.com>
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 26 Mar 2018 12:22:20 +0000
+Reviewed-on: https://review.openstack.org/542466
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/pike
