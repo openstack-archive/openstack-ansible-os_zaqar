@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Logan V <logan2211@gmail.com>
+Workflow+1: Logan V <logan2211@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 27 Mar 2018 17:20:26 +0000
+Reviewed-on: https://review.openstack.org/556942
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
