@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 24 Apr 2018 14:20:55 +0000
+Reviewed-on: https://review.openstack.org/562203
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
