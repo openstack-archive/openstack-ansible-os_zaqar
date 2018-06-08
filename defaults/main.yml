@@ -119,13 +119,15 @@ zaqar_requires_pip_packages:
 
 # Common pip packages
 zaqar_pip_packages:
-  - zaqar
+  - elasticsearch
+  - osprofiler
   - python-zaqarclient
   - PyMySQL
   - python-memcached
   - keystonemiddleware
   - pymongo
   - uwsgi
+  - zaqar
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the
