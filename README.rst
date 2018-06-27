@@ -33,7 +33,7 @@ Example Playbook
 
 .. code-block:: yaml
 
-   - name: Install zaqar server
+   - name: Install zaqar service 
      hosts: zaqar_all
      user: root
      roles:
