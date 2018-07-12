@@ -68,7 +68,7 @@
   file:
     path: "{{ zaqar_bin | dirname }}"
     state: absent
-  when: zaqar_get_venv | changed
+  when: zaqar_get_venv is changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -78,7 +78,7 @@
     path: "{{ zaqar_bin | dirname }}"
     state: directory
   register: zaqar_venv_dir
-  when: zaqar_get_venv | changed
+  when: zaqar_get_venv is changed
   tags:
     - zaqar-install
     - zaqar-pip-packages
@@ -88,7 +88,7 @@
     src: "/var/cache/{{ zaqar_venv_download_url | basename }}"
     dest: "{{ zaqar_bin | dirname }}"
     copy: "no"
-  when: zaqar_get_venv | changed
+  when: zaqar_get_venv is changed
 #  notify:
 #    - Restart zaqar api
   tags:
@@ -106,7 +106,7 @@
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
   when: zaqar_get_venv | failed or zaqar_get_venv | skipped
@@ -132,7 +132,7 @@
         --no-pip \
         --no-setuptools \
         --no-wheel
-  when: zaqar_get_venv | changed
+  when: zaqar_get_venv is changed
   tags:
     - skip_ansible_lint
     - zaqar-install

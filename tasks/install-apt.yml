@@ -20,7 +20,7 @@
     update_cache: yes
     cache_valid_time: "{{ cache_timeout }}"
   register: install_apt_packages
-  until: install_apt_packages | success
+  until: install_apt_packages is success
   retries: 5
   delay: 2
   with_items: "{{ zaqar_distro_packages }}"
