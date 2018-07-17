@@ -136,3 +136,7 @@ zaqar_role_project_group: zaqar_all
 
 ## Tunable overrides
 zaqar_zaqar_conf_overrides: {}
+zaqar_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group | default('rabbitmq_all') }}"
+zaqar_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group | default('rabbitmq_all') }}"
+zaqar_oslomsg_rpc_setup_host: "{{ (zaqar_oslomsg_rpc_host_group in groups) | ternary(groups[zaqar_oslomsg_rpc_host_group][0], 'localhost') }}"
+zaqar_oslomsg_notify_setup_host: "{{ (zaqar_oslomsg_notify_host_group in groups) | ternary(groups[zaqar_oslomsg_notify_host_group][0], 'localhost') }}"

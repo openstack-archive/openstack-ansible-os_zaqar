@@ -41,3 +41,22 @@
 
 - name: Flush handlers
   meta: flush_handlers
+- include_tasks: mq_setup.yml
+  when:
+    - "zaqar_services['zaqar-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[zaqar_services['zaqar-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+  with_items:
+    - oslomsg_setup_host: "{{ zaqar_oslomsg_rpc_setup_host }}"
+      oslomsg_userid: "{{ zaqar_oslomsg_rpc_userid }}"
+      oslomsg_password: "{{ zaqar_oslomsg_rpc_password }}"
+      oslomsg_vhost: "{{ zaqar_oslomsg_rpc_vhost }}"
+      oslomsg_transport: "{{ zaqar_oslomsg_rpc_transport }}"
+    - oslomsg_setup_host: "{{ zaqar_oslomsg_notify_setup_host }}"
+      oslomsg_userid: "{{ zaqar_oslomsg_notify_userid }}"
+      oslomsg_password: "{{ zaqar_oslomsg_notify_password }}"
+      oslomsg_vhost: "{{ zaqar_oslomsg_notify_vhost }}"
+      oslomsg_transport: "{{ zaqar_oslomsg_notify_transport }}"
+  tags:
+  no_log: true
+
+    - zaqar-config
