@@ -26,7 +26,12 @@ Default Variables
 Required Variables
 ==================
 
-(to be completed)
+.. code-block:: yaml
+
+   zaqar_local_mode: true
+   zaqar_install_nginx: true
+   zaqar_api_bind_address: 192.168.33.11
+   zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
 
 Example Playbook
 ================
@@ -38,7 +43,8 @@ Example Playbook
      user: root
      roles:
        - role: "os_zaqar"
-         zaqar_local_mode: true
-         zaqar_install_nginx: true
-         zaqar_api_bind_address: 192.168.33.11
-         zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
+     vars:
+       zaqar_local_mode: true
+       zaqar_install_nginx: true
+       zaqar_api_bind_address: 192.168.33.11
+       zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
