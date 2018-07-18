@@ -48,7 +48,7 @@ Example Playbook
      hosts: zaqar_all
      user: root
      roles:
-       - role: "os_zaqar"
+       - { role: "os_zaqar", tags: [ "os_zaqar" ] }
          zaqar_local_mode: true
          zaqar_install_nginx: true
          zaqar_api_bind_address: 192.168.33.11
