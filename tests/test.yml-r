@@ -14,19 +14,19 @@
 # limitations under the License.
 
 # Setup the host
-- include_tasks_tasks_tasks_tasks_tasks_tasks: common/test-setup-host.yml
+- include_tasks_tasks_tasks_tasks_tasks: common/test-setup-host.yml
 
 # Prepare the containers
-- include_tasks_tasks_tasks_tasks_tasks_tasks: common/test-prepare-containers.yml
+- include_tasks_tasks_tasks_tasks_tasks: common/test-prepare-containers.yml
 
 # Install RabbitMQ/MariaDB
-- include_tasks_tasks_tasks_tasks_tasks_tasks: common/test-install-infra.yml
+- include_tasks_tasks_tasks_tasks_tasks: common/test-install-infra.yml
 
 # Install Keystone
-- include_tasks_tasks_tasks_tasks_tasks_tasks: common/test-install-keystone.yml
+- include_tasks_tasks_tasks_tasks_tasks: common/test-install-keystone.yml
 
 # Install Zaqar
-- include_tasks_tasks_tasks_tasks_tasks_tasks: test-install-zaqar.yml
+- include_tasks_tasks_tasks_tasks_tasks: test-install-zaqar.yml
 
 # Test Zaqar
-- include_tasks_tasks_tasks_tasks_tasks_tasks: test-zaqar-functional.yml
+- include_tasks_tasks_tasks_tasks_tasks: test-zaqar-functional.yml
