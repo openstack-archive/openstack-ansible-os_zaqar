@@ -1,0 +1,9 @@
+Code-Review+2: David Wilde <david.wilde@rackspace.com>
+Code-Review+2: Logan V <logan2211@gmail.com>
+Workflow+1: Logan V <logan2211@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 06 Aug 2018 20:33:25 +0000
+Reviewed-on: https://review.openstack.org/587535
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
