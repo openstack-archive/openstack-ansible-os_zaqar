@@ -1,3 +1,4 @@
+---
 - name: Install zaqar server
   hosts: zaqar_all
   user: root
