@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sun, 19 Aug 2018 18:37:43 +0000
+Reviewed-on: https://review.openstack.org/590986
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/rocky
