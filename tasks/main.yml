@@ -24,14 +24,27 @@
   tags:
     - always
 
-- include: zaqar_pre_install.yml
-- include: zaqar_install.yml
-- include: zaqar_post_install.yml
+- include_tasks: zaqar_pre_install.yml
+- include_tasks: zaqar_install.yml
+- include_tasks: zaqar_post_install.yml
 
+<<<<<<< HEAD
 - include: zaqar_service_setup.yml
   run_once: yes
 
 - include: "zaqar_{{ (zaqar_install_apache | bool) | ternary('apache', 'nginx') }}.yml"
+=======
+- include_tasks: zaqar_service_setup.yml
+  when: inventory_hostname == groups['zaqar_all'][0]
+
+- include_tasks: zaqar_apache.yml
+  static: no
+  when: zaqar_install_apache | bool
+
+- include_tasks: zaqar_nginx.yml
+  static: no
+  when: zaqar_install_nginx | bool
+>>>>>>> b3e1640... use include_tasks instead of include
 
 - name: Flush handlers
   meta: flush_handlers
