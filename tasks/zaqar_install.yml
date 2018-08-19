@@ -19,6 +19,7 @@
 # set of constraints in pip.conf inside the venv,
 # perhaps prepared by giving a giving a list of
 # constraints to the role.
+
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
