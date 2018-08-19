@@ -24,14 +24,14 @@
   tags:
     - always
 
-- include: zaqar_pre_install.yml
-- include: zaqar_install.yml
-- include: zaqar_post_install.yml
+- include_tasks: zaqar_pre_install.yml
+- include_tasks: zaqar_install.yml
+- include_tasks: zaqar_post_install.yml
 
-- include: zaqar_service_setup.yml
+- include_tasks: zaqar_service_setup.yml
   run_once: yes
 
-- include: "zaqar_{{ (zaqar_install_apache | bool) | ternary('apache', 'nginx') }}.yml"
+- include_tasks: "zaqar_{{ (zaqar_install_apache | bool) | ternary('apache', 'nginx') }}.yml"
 
 - name: Flush handlers
   meta: flush_handlers
