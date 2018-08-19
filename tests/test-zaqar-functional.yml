@@ -17,13 +17,10 @@
   hosts: zaqar_all
   user: root
   gather_facts: false
+  vars_files:
+    - common/test-vars.yml
   tasks:
-    - name: Install testing pip packages
-      pip:
-        name: "httplib2"
     - name: Check the zaqar-api
       uri:
         url: "http://localhost:8888"
         status_code: 401
-  vars_files:
-    - common/test-vars.yml
