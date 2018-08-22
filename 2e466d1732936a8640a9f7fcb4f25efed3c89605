@@ -1,0 +1,10 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Code-Review+1: weizj <wzj334965317@outlook.com>
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Workflow+1: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 22 Aug 2018 15:17:12 +0000
+Reviewed-on: https://review.openstack.org/580866
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
