@@ -1,0 +1,9 @@
+Code-Review+1: Vu Cong Tuan <tuanvc@vn.fujitsu.com>
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Workflow+1: Mohammed Naser <mnaser@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 23 Aug 2018 03:43:10 +0000
+Reviewed-on: https://review.openstack.org/580072
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
