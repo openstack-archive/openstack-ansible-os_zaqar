@@ -22,17 +22,13 @@
     mode: "0644"
     config_overrides: "{{ zaqar_zaqar_conf_overrides }}"
     config_type: "ini"
-#  notify: Restart zaqar api
-  tags:
-    - zaqar-config
-    - zaqar-post-install
+  notify:
+    - Restart zaqar services
 
 - name: Copy zaqar logging config
   copy:
     src: "logging.conf"
     dest: "/etc/zaqar/logging.conf"
-#  notify: Restart zaqar api
-  tags:
-    - zaqar-config
-    - zaqar-post-install
+  notify:
+    - Restart zaqar services
 

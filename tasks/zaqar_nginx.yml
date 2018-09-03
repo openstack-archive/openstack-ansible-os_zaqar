@@ -22,8 +22,6 @@
     mode: "0755"
   notify:
     - Restart Nginx
-  tags:
-    - zaqar-nginx
 
 # Actually, we should also add an upstart script to automatically start uWSGI
 # at boot time. Here is just for testing purpose.
@@ -38,9 +36,6 @@
     --vacuum
   notify:
     - Restart Nginx
-  tags:
-    - zaqar-nginx
-    - skip_ansible_lint
 
 - name: Add zaqar nginx configuration file
   template:
@@ -50,8 +45,6 @@
     group: "root"
   notify:
     - Restart Nginx
-  tags:
-    - zaqar-nginx
 
 - name: Enabled zaqar vhost
   file:
@@ -60,5 +53,3 @@
     state: "link"
   notify:
     - Restart Nginx
-  tags:
-    - zaqar-nginx
