@@ -16,8 +16,10 @@
 ## APT Cache options
 cache_timeout: 600
 
+zaqar_devel_distro_packages:
+  - git
+
 zaqar_distro_packages:
-  - "{% if zaqar_developer_mode %}git{% endif %}"
   - gcc
   - libxml2-dev
   - libxslt1-dev
@@ -25,7 +27,10 @@ zaqar_distro_packages:
   - python2.7-dev
   - python-dev
   - zlib1g-dev
-  - "{% if zaqar_install_apache %}apache2{% endif %}"
-  - "{% if zaqar_install_apache %}libapache2-mod-wsgi{% endif %}"
-  - "{% if zaqar_install_nginx %}nginx{% endif %}"
 
+zaqar_apache_distro_packages:
+  - apache2
+  - libapache2-mod-wsgi
+
+zaqar_nginx_distro_packages:
+  - nginx
