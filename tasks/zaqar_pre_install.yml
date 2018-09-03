@@ -18,8 +18,6 @@
     name: "{{ zaqar_system_group_name }}"
     state: "present"
     system: "yes"
-  tags:
-    - zaqar-group
 
 - name: Create the zaqar system user
   user:
@@ -30,8 +28,6 @@
     system: "yes"
     createhome: "yes"
     home: "{{ zaqar_system_user_home }}"
-  tags:
-    - zaqar-user
 
 - name: Create zaqar dir
   file:
@@ -48,8 +44,6 @@
     - { path: "/var/www/cgi-bin", owner: root, group: root }
     - { path: "/var/www/cgi-bin/zaqar" }
     - { path: "/var/cache/zaqar", mode: "0700" }
-  tags:
-    - zaqar-dirs
 
 - name: Test for log directory or link
   shell: |
@@ -62,9 +56,6 @@
   register: log_dir
   failed_when: false
   changed_when: log_dir.rc != 0
-  tags:
-    - zaqar-dirs
-    - zaqar-logs
 
 - name: Create zaqar log dir
   file:
@@ -74,6 +65,3 @@
     group: "{{ zaqar_system_group_name }}"
     mode: "0755"
   when: log_dir.rc != 0
-  tags:
-    - zaqar-dirs
-    - zaqar-logs

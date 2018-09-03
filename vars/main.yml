@@ -1,5 +1,5 @@
 ---
-# Copyright 2016, Rackspace US, Inc.
+# Copyright 2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install zaqar apt packages
-  apt:
-    pkg: "{{ item }}"
-    state: "{{ zaqar_package_state }}"
-    update_cache: yes
-    cache_valid_time: "{{ cache_timeout }}"
-  register: install_apt_packages
-  until: install_apt_packages is success
-  retries: 5
-  delay: 2
-  with_items: "{{ zaqar_distro_packages }}"
-  when:
-    - item != ''
-  tags:
-    - zaqar-apt-packages
+#
+# Compile a list of the distro packages to install based on
+# the options enabled.
+#
 
+zaqar_package_list: |-
+  {% set packages = zaqar_distro_packages %}
+  {% if zaqar_install_apache | bool %}
+  {%   set _ = packages.extend(zaqar_apache_distro_packages) %}
+  {% elif zaqar_install_nginx | bool %}
+  {%   set _ = packages.extend(zaqar_nginx_distro_packages) %}
+  {% endif %}
+  {{ packages }}

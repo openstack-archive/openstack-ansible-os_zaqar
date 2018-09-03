@@ -22,8 +22,6 @@
     mode: "0755"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Add zaqar apache configuration files
   template:
@@ -36,8 +34,6 @@
     - { src: "zaqar-httpd.conf.j2", dest: "/etc/apache2/sites-available/zaqar-httpd.conf" }
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Disable default apache site
   file:
@@ -45,8 +41,6 @@
     state: "absent"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Enabled zaqar vhost
   file:
@@ -55,8 +49,6 @@
     state: "link"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Ensure Apache ServerName
   lineinfile:
@@ -64,8 +56,6 @@
     line: "ServerName {{ inventory_hostname }}"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Ensure Apache ServerTokens
   lineinfile:
@@ -74,8 +64,6 @@
     line: "ServerTokens Prod"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
 
 - name: Ensure Apache ServerSignature
   lineinfile:
@@ -84,5 +72,3 @@
     line: "ServerSignature Off"
   notify:
     - Restart Apache
-  tags:
-    - zaqar-httpd
