@@ -18,6 +18,8 @@
     name: "{{ zaqar_api_program_name }}"
     state: "restarted"
     pattern: "{{ zaqar_api_program_name }}"
+  listen:
+    - "venv changed"
 
 - name: Restart Apache
   service:

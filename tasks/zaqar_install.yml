@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: install-apt.yml
-  static: no
-  when: ansible_pkg_mgr == 'apt'
-  tags:
-    - install-apt
-
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
@@ -28,112 +28,23 @@
       {% endfor %}
   when:
     - zaqar_developer_mode | bool
-    - not zaqar_local_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
 
-- name: Retrieve checksum for venv download
-  uri:
-    url: "{{ zaqar_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: yes
-  register: zaqar_venv_checksum
-  when: zaqar_venv_download | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
+- name: Ensure remote wheel building is disabled in developer mode
+  set_fact:
+    venv_build_host: "{{ ansible_hostname }}"
+  when:
+    - zaqar_developer_mode | bool
 
-- name: Attempt venv download
-  get_url:
-    url: "{{ zaqar_venv_download_url }}"
-    dest: "/var/cache/{{ zaqar_venv_download_url | basename }}"
-    checksum: "sha1:{{ zaqar_venv_checksum.content | trim }}"
-  register: zaqar_get_venv
-  when: zaqar_venv_download | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Copy pre-build venv package
-  copy:
-    src: "{{ zaqar_venv_localpath }}"
-    dest: "/var/cache/"
-  register: zaqar_get_venv
-  when: zaqar_local_mode | bool
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Remove existing venv
-  file:
-    path: "{{ zaqar_bin | dirname }}"
-    state: absent
-  when: zaqar_get_venv is changed
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Create zaqar venv dir
-  file:
-    path: "{{ zaqar_bin | dirname }}"
-    state: directory
-  register: zaqar_venv_dir
-  when: zaqar_get_venv is changed
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Unarchive pre-built venv
-  unarchive:
-    src: "/var/cache/{{ zaqar_venv_download_url | basename }}"
-    dest: "{{ zaqar_bin | dirname }}"
-    copy: "no"
-  when: zaqar_get_venv is changed
-#  notify:
-#    - Restart zaqar api
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-- name: Install pip packages (venv)
-  pip:
-    name: "{{ zaqar_pip_packages }}"
-    state: "{{ zaqar_pip_package_state }}"
-    virtualenv: "{{ zaqar_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ zaqar_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages is success
-  retries: 5
-  delay: 2
-  when: zaqar_get_venv | failed or zaqar_get_venv | skipped
-#  notify:
-#    - Restart zaqar api
-  tags:
-    - zaqar-install
-    - zaqar-pip-packages
-
-# NOTE(odyssey4me):
-# We reinitialize the venv to ensure that the right
-# version of python is in the venv, but we do not
-# want virtualenv to also replace pip, setuptools
-# and wheel so we tell it not to.
-# We do not use --always-copy for CentOS/SuSE due
-# to https://github.com/pypa/virtualenv/issues/565
-- name: Update virtualenv path
-  shell: |
-    find {{ zaqar_bin }} -name \*.pyc -delete
-    sed -si '1s/^.*python.*$/#!{{ zaqar_bin | replace ('/','\/') }}\/python/' {{ zaqar_bin }}/*
-    virtualenv {{ zaqar_bin | dirname }} \
-        {{ (ansible_pkg_mgr == 'apt') | ternary('--always-copy', '') }} \
-        --no-pip \
-        --no-setuptools \
-        --no-wheel
-  when: zaqar_get_venv is changed
-  tags:
-    - skip_ansible_lint
-    - zaqar-install
-    - zaqar-pip-packages
+- name: Install the python venv
+  include_role:
+    name: "python_venv_build"
+    private: yes
+  vars:
+    venv_install_destination_path: "{{ zaqar_bin | dirname }}"
+    venv_install_distro_package_list: "{{ zaqar_distro_packages }}"
+    venv_pip_install_args: "{{ zaqar_pip_install_args }}"
+    venv_pip_packages: "{{ zaqar_pip_packages }}"
+    venv_facts_when_changed:
+      - section: "zaqar"
+        option: "venv_tag"
+        value: "{{ zaqar_venv_tag }}"
