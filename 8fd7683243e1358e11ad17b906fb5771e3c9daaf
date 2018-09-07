@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 07 Sep 2018 10:21:23 +0000
+Reviewed-on: https://review.openstack.org/599813
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/rocky
