@@ -1,0 +1,9 @@
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 26 Oct 2018 13:26:55 +0000
+Reviewed-on: https://review.openstack.org/609447
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/stable/rocky
