@@ -56,3 +56,12 @@ Example Playbook
          zaqar_install_nginx: true
          zaqar_api_bind_address: 192.168.33.11
          zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
+
+Documentation for the project can be found at:
+  https://docs.openstack.org/openstack-ansible-os_zaqar/latest/
+
+Release notes for the project can be found at:
+  https://docs.openstack.org/releasenotes/openstack-ansible-os_zaqar/
+
+The project home is at:
+  https://launchpad.net/openstack-ansible
