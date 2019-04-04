@@ -1,0 +1,9 @@
+Code-Review+2: Dmitriy Rabotjagov (noonedeadpunk) <noonedeadpunk@ya.ru>
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse@odyssey4.me>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse@odyssey4.me>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 04 Apr 2019 09:06:58 +0000
+Reviewed-on: https://review.openstack.org/649862
+Project: openstack/openstack-ansible-os_zaqar
+Branch: refs/heads/master
