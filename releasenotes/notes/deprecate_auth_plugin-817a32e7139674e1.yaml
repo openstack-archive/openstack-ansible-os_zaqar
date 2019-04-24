@@ -1,5 +1,0 @@
----
-deprecations:
-  - The ``zaqar_keystone_auth_plugin`` variable has been deprecated.
-    ``zaqar_keystone_auth_type`` should be used instead to configure
-    authentication type.

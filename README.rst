@@ -1,67 +1,10 @@
-========================
-Team and repository tags
-========================
+This project is no longer maintained.
 
-.. image:: https://governance.openstack.org/tc/badges/openstack-ansible-os_zaqar.svg
-    :target: https://governance.openstack.org/tc/reference/tags/index.html
+The contents of this repository are still available in the Git
+source code management system.  To see the contents of this
+repository before it reached its end of life, please check out the
+previous commit with "git checkout HEAD^1".
 
-.. Change things from this point on
-
-=======================
-OpenStack-Ansible Zaqar
-=======================
-:tags: openstack, zaqar, cloud, ansible
-:category: \*nix
-
-This Ansible role installs and configures OpenStack Zaqar.
-
-Documentation for the project can be found at:
-  https://docs.openstack.org/openstack-ansible-os_zaqar/latest/
-
-Release notes for the project can be found at:
-  https://docs.openstack.org/releasenotes/openstack-ansible-os_zaqar/
-
-The project source code repository is located at:
-  https://git.openstack.org/cgit/openstack/openstack-ansible-os_zaqar/
-
-The project home is at:
-  https://launchpad.net/openstack-ansible
-
-The bugs can be found at:
-  https://bugs.launchpad.net/openstack-ansible
-
-Default Variables
-=================
-
-.. literalinclude:: ../../defaults/main.yml
-   :language: yaml
-   :start-after: under the License.
-
-Required Variables
-==================
-
-(to be completed)
-
-Example Playbook
-================
-
-.. code-block:: yaml
-
-   - name: Install zaqar service
-     hosts: zaqar_all
-     user: root
-     roles:
-       - role: "os_zaqar"
-         zaqar_local_mode: true
-         zaqar_install_nginx: true
-         zaqar_api_bind_address: 192.168.33.11
-         zaqar_mgmt_db_connection_string: 'sqlite:////tmp/zaqar.db'
-
-Documentation for the project can be found at:
-  https://docs.openstack.org/openstack-ansible-os_zaqar/latest/
-
-Release notes for the project can be found at:
-  https://docs.openstack.org/releasenotes/openstack-ansible-os_zaqar/
-
-The project home is at:
-  https://launchpad.net/openstack-ansible
+For any further questions, please email
+openstack-discuss@lists.openstack.org or join #openstack-dev on
+Freenode.
